@@ -1,4 +1,4 @@
-# Competitive Programming Backend
+# Codeclash Backend
 
 ## Installation
 
@@ -15,7 +15,7 @@ Following [this link](https://docs.docker.com/engine/install/), you can install 
 After installing Docker and you have the engine open, go to the directory which contains the Dockerfile and run:
 
 ```
-docker build -t competitive_programming_backend .
+docker build -t codeclash_backend .
 ```
 
 You will need to do this everytime there are or you make any updates to the project.
@@ -23,8 +23,9 @@ You will need to do this everytime there are or you make any updates to the proj
 ### Run Dockerfile
 
 Once the Dockerfile is built, run:
+
 ```
-docker run -p 5000:5000 competitive_programming_backend
+docker run -p 5000:5000 codeclash_backend
 ```
 
 This will host the Flask server on your terminal so long as port 5000 is not being used.
@@ -82,7 +83,7 @@ Anytime you pull the repository, you will need to check for changes in the necce
 Once you have installed the dependencies and are in the terminal which has your virtual environment activate, so long as you are in the same folder which contains setup.py, you can run:
 
 ```
-flask --app competitive_programming_backend run
+flask --app codeclash_backend run
 ```
 
 This will start up a local Flask instance, which you can use to test the routes of the backend.
