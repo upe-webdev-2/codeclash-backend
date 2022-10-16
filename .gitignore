@@ -1,2 +1,4 @@
-competitive_programming_backend.egg-info
+codeclash_backend.egg-info
 venv
+*.pyc
+__pycache__
