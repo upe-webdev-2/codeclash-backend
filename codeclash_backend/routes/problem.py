@@ -28,5 +28,7 @@ def index_problem():
             "output": "[0,1]"
             }
         ],
-        "starterCode": "def twoSum(nums: List[int], target: int) -> List[int]:\n\t# Code here...\n\tpass"
+        "starterCode": "def twoSum(nums: List[int], target: int) -> List[int]:\n\t# Code here...\n\tpass",
+        "testCases": "[{inputs: [2], output: 4}, {inputs: [4], output: 16}]",
+        "functionName": "solve"
     }
