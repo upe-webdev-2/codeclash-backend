@@ -1,5 +1,7 @@
 from flask import Blueprint
+from dotenv import dotenv_values
 execute = Blueprint('execute', __name__)
+require('dotenv').config()
 
 def append_script(script : str, problem_info : dict) -> str:
     test_cases = problem_info.get("testCases")
@@ -29,5 +31,19 @@ def append_script(script : str, problem_info : dict) -> str:
     return script
 
 @execute.route('/', methods = ["POST"])
-def index():
-    return {}
+def index(language : str, script : str):
+    if request.method == 'POST':
+    url = "https://api.jdoodle.com/v1/execute"
+    headers = {"application/x-www-form-urlencoded"}
+    data = {
+        "clientId": "6468e7831212d87771a2e276aa7f80f",
+        "clientSecret": "6f2fe0c2ec2d267423d68285bad2d6ba71bd94ab349c08e47ee25218984ea5ae",
+        "script": "print('hello world')",
+        "language": "python3",
+        "versionIndex": "0"
+    }
+    res = request.post(url, data, headers)
+
+    res = res.json()
+
+    return res
