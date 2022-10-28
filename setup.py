@@ -5,6 +5,8 @@ setup(
     packages = ['codeclash_backend'],
     include_package_data = True,
     install_requires = [
-        'flask'
+        'flask',
+        'python-dotenv',
+        'requests'
     ],
 )

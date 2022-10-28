@@ -1,7 +1,10 @@
-from flask import Blueprint
-from dotenv import dotenv_values
+import os
+import requests
+from flask import Blueprint, request
+from dotenv import load_dotenv
+
 execute = Blueprint('execute', __name__)
-require('dotenv').config()
+load_dotenv()
 
 def append_script(script : str, problem_info : dict) -> str:
     test_cases = problem_info.get("testCases")
@@ -30,20 +33,30 @@ def append_script(script : str, problem_info : dict) -> str:
 
     return script
 
-@execute.route('/', methods = ["POST"])
-def index(language : str, script : str):
-    if request.method == 'POST':
-    url = "https://api.jdoodle.com/v1/execute"
-    headers = {"application/x-www-form-urlencoded"}
-    data = {
-        "clientId": "6468e7831212d87771a2e276aa7f80f",
-        "clientSecret": "6f2fe0c2ec2d267423d68285bad2d6ba71bd94ab349c08e47ee25218984ea5ae",
-        "script": "print('hello world')",
-        "language": "python3",
-        "versionIndex": "0"
-    }
-    res = request.post(url, data, headers)
+@execute.route('/<id>', methods = ["POST", "GET"])
+def index(id):
+    
+    post_body = request.json
 
-    res = res.json()
+    script = post_body.script
+    language = post_body.language
+
+    # IMPLEMENT GET PROBLEM INFO FROM ID
+
+    res = {}
+
+    if request.method == 'GET':
+        url = "https://api.jdoodle.com/v1/execute"
+        headers = {"Content-type" : "application/json"}
+        data = {
+            "clientId": os.environ.get("CLIENT_ID"),
+            "clientSecret": os.environ.get("CLIENT_SECRET"),
+            "script": script,
+            "language": language,
+            "versionIndex": "0"
+        }
+        res = requests.post(url, json = data, headers = headers)
+
+        res = res.json()
 
     return res
