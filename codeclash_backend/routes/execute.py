@@ -65,8 +65,6 @@ def append_script(script : str, problem_info : dict) -> str:
                 break
             """
 
-    print(script)
-
     return script
 
 @execute.route('/<id>', methods = ["POST"])
@@ -76,14 +74,12 @@ def index(id):
     script = post_body.get("script")
     language = post_body.get("language")
 
-    # IMPLEMENT GET PROBLEM INFO FROM ID
-
     problem_info = array[int(id)]
     processed_script = append_script(script, problem_info)
 
     res = {}
 
-    if request.method == 'GET':
+    if request.method == "POST":
         url = "https://api.jdoodle.com/v1/execute"
         headers = {"Content-type" : "application/json"}
         data = {
@@ -96,5 +92,7 @@ def index(id):
         res = requests.post(url, json = data, headers = headers)
 
         res = res.json()
-
+    else:
+        res["status"] = 405
+        res["message"] = "Please use POST method for route"
     return res
