@@ -1,6 +1,7 @@
 import os
 import requests
 from flask import Blueprint, request
+from codeclash_backend import socketio
 
 array = [{
         "id": 1,
@@ -90,6 +91,9 @@ def index(id):
         res = requests.post(url, json = data, headers = headers)
 
         res = res.json()
+
+        socketio.emit('submission', {'data' : 42}, namespace = '/execute')
+
     else:
         res["status"] = 405
         res["message"] = "Please use POST method for route"

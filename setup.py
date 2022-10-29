@@ -8,6 +8,7 @@ setup(
         'flask',
         'python-dotenv',
         'requests',
-        'flask-socketio'
+        'flask-socketio',
+        'simple-websocket'
     ],
 )

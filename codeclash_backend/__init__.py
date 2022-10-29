@@ -16,4 +16,5 @@ def create_app(debug = False):
 
     import codeclash_backend.routes
     socketio.init_app(app)
+    import codeclash_backend.sockets
     return app
