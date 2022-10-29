@@ -1,7 +1,6 @@
 import os
 import requests
 from flask import Blueprint, request
-from dotenv import load_dotenv
 
 array = [{
         "id": 1,
@@ -43,7 +42,6 @@ array = [{
     }]
 
 execute = Blueprint('execute', __name__)
-load_dotenv()
 
 def append_script(script : str, problem_info : dict) -> str:
     test_cases = problem_info.get("testCases")
