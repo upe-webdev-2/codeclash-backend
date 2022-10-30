@@ -33,8 +33,7 @@ array = [{
         "starterCode": 'def twoSum(nums: List[int], target: int) -> List[int]:\n\t# Code here...\n\tpass',
         "testCases": [{"inputs": [[2,7,11,15], 9], "output": 4}, {"inputs": [4], "output": 16}],
         "functionName": "twoSum"
-    }, 
-         {
+        },{    
         "id": 1,
         "title": "Valid Parentheses",
         "difficulty": "Easy",
@@ -63,8 +62,47 @@ array = [{
         "starterCode": 'def isValid(self, s): \n\t# Code here...\n\t',
         "testCases": [{"inputs": ["()"], "output": True}, {"inputs": ["(]"], "output": False}, {"inputs": ["()[]{}"], "output": True}],
         "functionName": "validParentheses"
-        }, 
-        {}]
+        },{
+        "id": 2,
+        "title": "Roman to Integer",
+        "difficulty": "Easy",
+        "objectives": [
+        "Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M."
+        "Symbol       Value"
+        "I             1"
+        "V             5"
+        "X             10"
+        "L             50"
+        "C             100"
+        "D             500"
+        "M             1000"
+        "For example, 2 is written as II in Roman numeral, just two ones added together. 12 is written as XII, which is simply X + II."
+        "The number 27 is written as XXVII, which is XX + V + II."
+        "Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not IIII."
+        "Instead, the number four is written as IV. Because the one is before the five we subtract it making four."
+        "The same principle applies to the number nine, which is written as IX. There are six instances where subtraction is used:"
+        "I can be placed before V (5) and X (10) to make 4 and 9."
+        "X can be placed before L (50) and C (100) to make 40 and 90."
+        "C can be placed before D (500) and M (1000) to make 400 and 900."
+        "Given a roman numeral, convert it to an integer."
+        ],
+        "examples": [{
+            "input": "s = III",
+            "output": "3",
+            "explanation": "III = 3"
+            },{
+            "input": "s = LVIII",
+            "output": "58",
+            "explanation": "L = 50, V= 5, III = 3"
+            },{
+            "input": "s = MCMXCIV",
+            "output": "1994",
+            "explanation": "M = 1000, CM = 900, XC = 90 and IV = 4"
+            }],
+        "starterCode": 'def romanToInt(self, s: str) -> int:\n\t# Code here...\n\t',
+        "testCases": [{"inputs": ["III"], "output": 3}, {"inputs": ["LVIII"], "output": 58}, {"inputs": ["MCMXCIV"], "output": 1994}],
+        "functionName": "romanToInteger"
+        }]
 
 
 @problem.route('/<int:id>')
