@@ -7,7 +7,7 @@ load_dotenv()
 
 app = Flask(__name__)
 
-socketio = SocketIO()
+socketio = SocketIO(cors_allowed_origins = "*")
 
 def create_app(debug = False):
     """Create an application."""
