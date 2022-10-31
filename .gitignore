@@ -2,4 +2,4 @@ codeclash_backend.egg-info
 venv
 *.pyc
 __pycache__
-.env
+*.env
