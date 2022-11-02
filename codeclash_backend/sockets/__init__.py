@@ -6,6 +6,17 @@ from flask import request
 waiting_room = []
 rooms = {}
 
+def find_room(username = None: str, user_id = None: str, rooms : dict) -> dict:
+
+    if username is None and user_id is None:
+        return {}
+
+    for room in rooms.keys():
+        if user_id in room or username in rooms.get(room):
+            return {"room_name" : room, "players" : rooms.get(room)}
+    
+    return {}
+
 def already_playing(username : str, waiting_room : list, rooms : dict) -> bool:
     for user in waiting_room:
         _, searching_name = user
@@ -50,19 +61,19 @@ def ready_game(data):
 def player_leave(data):
     lost_player_id = request.sid
     lost_player_name = data.get("username")
-    won_player_name = None
-    room_name = None
 
-    for room in rooms.keys():
-        if lost_player_id in room:
-            room_name = room
-            names = rooms.get(room).split(" ")
-            del rooms[room]
-            won_player_name = names[1] if names[0] == lost_player_name else names[0]
-            break
-    
-    # Maybe send error?
-    if room_name is None: return
+    room_info = find_room(lost_player_name, lost_player_id, rooms)
+
+    if len(room_info) == 0:
+        # User not in a room. Maybe return an error?
+        return
+
+    room_name = room_info.get("room_name")
+    room_players = room_info.get("players")
+
+    won_player_name = room_players[1] if room_players[0] == lost_player_name else room_players[0]
+
+    del rooms[room_name]
 
     emit("finishedGame", {"wonPlayer" : won_player_name, "lostPlayer" : lost_player_name}, namespace = "/play", to = room)
     close_room(room_name)
