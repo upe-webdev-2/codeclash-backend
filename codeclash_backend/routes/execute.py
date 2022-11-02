@@ -92,8 +92,6 @@ def index(id):
 
         res = res.json()
 
-        socketio.emit('submission', {'data' : 42}, namespace = '/execute')
-
     else:
         res["status"] = 405
         res["message"] = "Please use POST method for route"
