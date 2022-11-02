@@ -1,7 +1,7 @@
 import os
 import requests
 from flask import Blueprint, request
-from dotenv import load_dotenv
+from codeclash_backend import socketio
 
 array = [{
         "id": 1,
@@ -43,7 +43,6 @@ array = [{
     }]
 
 execute = Blueprint('execute', __name__)
-load_dotenv()
 
 def append_script(script : str, problem_info : dict) -> str:
     test_cases = problem_info.get("testCases")
@@ -92,6 +91,7 @@ def index(id):
         res = requests.post(url, json = data, headers = headers)
 
         res = res.json()
+
     else:
         res["status"] = 405
         res["message"] = "Please use POST method for route"

@@ -7,6 +7,8 @@ setup(
     install_requires = [
         'flask',
         'python-dotenv',
-        'requests'
+        'requests',
+        'flask-socketio',
+        'simple-websocket'
     ],
 )
