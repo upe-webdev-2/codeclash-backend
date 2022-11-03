@@ -1,7 +1,6 @@
 import os
 import requests
 from flask import Blueprint, request
-from codeclash_backend import socketio
 
 array = [{
         "id": 1,
