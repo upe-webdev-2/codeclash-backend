@@ -83,7 +83,7 @@ Anytime you pull the repository, you will need to check for changes in the necce
 Once you have installed the dependencies and are in the terminal which has your virtual environment activate, so long as you are in the same folder which contains setup.py, you can run:
 
 ```
-flask --app codeclash_backend run
+python startup.py
 ```
 
 This will start up a local Flask instance, which you can use to test the routes of the backend.
