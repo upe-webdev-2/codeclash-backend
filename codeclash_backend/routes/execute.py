@@ -55,6 +55,7 @@ def append_script(script : str, problem_info : dict) -> str:
             user_return = {function_name}(*case.get("inputs"))
             input_details = ""
             if user_return != case.get("output"):
+                print("ERROR_OCCURED")
                 print("Inputs:")
                 print(*case.get("inputs"))
                 print("Your Output")
@@ -72,6 +73,9 @@ def index(id):
     post_body = request.json
     script = post_body.get("script")
     language = post_body.get("language")
+
+    # Need to rework this. Maybe make /execute into a socket handle, since room name shouldn't have to be passed into /execute route.
+    room_name = post_body.get("roomName")
 
     problem_info = array[int(id)]
     processed_script = append_script(script, problem_info)
@@ -91,6 +95,9 @@ def index(id):
         res = requests.post(url, json = data, headers = headers)
 
         res = res.json()
+
+        if "ERROR_OCCURED" not in res.get("output"):
+            socketio.emit("playerWin", namespace = "/play", to = "")
 
     else:
         res["status"] = 405
