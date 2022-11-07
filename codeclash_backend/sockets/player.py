@@ -1,9 +1,12 @@
 from codeclash_backend import socketio
 from . import already_playing, dequeue_from_waiting, queue_to_waiting, create_room, find_room, delete_room, amount_players_waiting
+from ..routes.execute import execute_code
 from flask import request
 from flask_socketio import close_room, emit
 
-@socketio.on('playerJoin', namespace = "/play")
+namespace = "/play"
+
+@socketio.on('playerJoin', namespace = namespace)
 def join_game(data):
     first_player_id = request.sid
     first_player_name = data.get("username")
@@ -24,19 +27,19 @@ def join_game(data):
     else:
         queue_to_waiting(first_player_id, first_player_name)
 
-@socketio.on('playerLeave', namespace = "/play")
+@socketio.on('playerLeave', namespace = namespace)
 def player_leave(data):
     lost_player_id = request.sid
     lost_player_name = data.get("username")
 
-    room_info = find_room(lost_player_name, lost_player_id)
+    room = find_room(lost_player_name, lost_player_id)
 
-    if len(room_info) == 0:
+    if len(room) == 0:
         # User not in a room. Maybe return an error?
         return
 
-    room_name = room_info.get("room_name")
-    room_players = room_info.get("players")
+    room_name = room.get("roomName")
+    room_players = room.get("roomInfo").get("players")
 
     won_player_name = room_players[1] if room_players[0] == lost_player_name else room_players[0]
 
@@ -45,19 +48,19 @@ def player_leave(data):
     emit("finishedGame", {"wonPlayer" : won_player_name, "lostPlayer" : lost_player_name}, namespace = "/play", to = room_name)
     close_room(room_name)
 
-@socketio.on("playerWin", namespace = "/play")
+@socketio.on("playerWin", namespace = namespace)
 def player_win(data):
     won_player_id = request.sid
     won_player_name = data.get("username")
 
-    room_info = find_room(won_player_name, won_player_id)
+    room = find_room(won_player_name, won_player_id)
 
-    if len(room_info) == 0:
+    if len(room) == 0:
         # User not in a room. Maybe return an error?
         return
 
-    room_name = room_info.get("room_name")
-    room_players = room_info.get("players")
+    room_name = room.get("roomName")
+    room_players = room.get("roomInfo").get("players")
 
     lost_player_name = room_players[1] if room_players[0] == won_player_name else room_players[0]
 
@@ -65,3 +68,14 @@ def player_win(data):
 
     emit("finishedGame", {"wonPlayer" : won_player_name, "lostPlayer" : lost_player_name}, namespace = "/play", to = room_name)
     close_room(room_name)
+
+@socketio.on("playerTest", namespace = namespace)
+def player_test(data):
+    user_code = data.get("userCode")
+    player_name = data.get("username")
+    room = find_room(player_name)
+    room_name = room.get("roomName")
+    problem_id = room.get("roomInfo").get("problemID")
+
+    result = execute_code(user_code, problem_id)
+    # DO SOMETHING WITH RESULT

@@ -2,6 +2,7 @@ import os
 import requests
 from flask import Blueprint, request
 from codeclash_backend import socketio
+from .problem import specific_problem
 
 array = [{
         "id": 1,
@@ -44,16 +45,22 @@ array = [{
 
 execute = Blueprint('execute', __name__)
 
-def append_script(script : str, problem_info : dict) -> str:
+def append_script(script : str, problem_info : dict, is_test = False) -> str:
     test_cases = problem_info.get("testCases")
+
+    if is_test:
+        test_cases = test_cases[:1]
+
     function_name = problem_info.get("functionName")
     input_length = len(test_cases[0].get("inputs"))
 
+    script += """\nprint("STARTING_TESTS")"""
     script += f"""\ntest_cases = {test_cases}"""
     script += f"""\nif __name__ == "__main__":
         for case in test_cases:
             user_return = {function_name}(*case.get("inputs"))
             input_details = ""
+            print("TEST_RESULT")
             if user_return != case.get("output"):
                 print("ERROR_OCCURED")
                 print("Inputs:")
@@ -62,12 +69,13 @@ def append_script(script : str, problem_info : dict) -> str:
                 print(user_return)
                 print("Expected Output")
                 print(case.get("output"))
-                break
+            else:
+                print("TEST_PASSED")
             """
 
     return script
 
-def execute_code(script : str, problem_index : int, room_name : str) -> None:
+def execute_code(script : str, problem_id : int, is_test = False, language = "python3", version_index = "3") -> None:
     """
     Executes user code through the JDOODLE API and returns a dictionary of information based on
     the JDOODLE output.
@@ -77,14 +85,43 @@ def execute_code(script : str, problem_index : int, room_name : str) -> None:
     script : str
         A string of code written by the user
     
-    problem_index : int
-        The index of the problem being solved by the user, which indicates the test_cases that should be 
+    problem_id : int
+        The unique id of the problem being solved by the user, which indicates the test_cases that should be 
         appended to the script parameter.
     
-    room_name : str
-        The room name of the users whose result will be emitted to.
+    is_test : bool
+        Boolean to determine whether user is only testing out code, in which case only the first test case will be ran.
+    
+    language : str
+        Language that the user's code is written in, used in the JDOODLE compiler, linked here: https://docs.jdoodle.com/integrating-compiler-ide-to-your-application/languages-and-versions-supported-in-api-and-plugins
+    
+    version_index : str
+        Integer representing version of language, as per JDOODLE's documentation, linked here: https://docs.jdoodle.com/integrating-compiler-ide-to-your-application/languages-and-versions-supported-in-api-and-plugins
     """
-    return
+
+    problem_info = specific_problem(problem_id)
+    processed_script = append_script(script, problem_info, is_test)
+
+    res = {}
+
+    url = "https://api.jdoodle.com/v1/execute"
+    headers = {"Content-type" : "application/json"}
+    data = {
+        "clientId": os.environ.get("CLIENT_ID"),
+        "clientSecret": os.environ.get("CLIENT_SECRET"),
+        "script": processed_script,
+        "language": language,
+        "versionIndex": version_index
+    }
+
+    res = requests.post(url, json = data, headers = headers)
+
+    res = res.json()
+
+    return parse_output(res)
+
+def parse_output(res : dict):
+    return res
 
 @execute.route('/<id>', methods = ["POST"])
 def index(id):
@@ -93,32 +130,4 @@ def index(id):
     script = post_body.get("script")
     language = post_body.get("language")
 
-    # Need to rework this. Maybe make /execute into a socket handle, since room name shouldn't have to be passed into /execute route.
-    room_name = post_body.get("roomName")
-
-    problem_info = array[int(id)]
-    processed_script = append_script(script, problem_info)
-
-    res = {}
-
-    if request.method == "POST":
-        url = "https://api.jdoodle.com/v1/execute"
-        headers = {"Content-type" : "application/json"}
-        data = {
-            "clientId": os.environ.get("CLIENT_ID"),
-            "clientSecret": os.environ.get("CLIENT_SECRET"),
-            "script": processed_script,
-            "language": language,
-            "versionIndex": "0"
-        }
-        res = requests.post(url, json = data, headers = headers)
-
-        res = res.json()
-
-        if "ERROR_OCCURED" not in res.get("output"):
-            socketio.emit("playerWin", namespace = "/play", to = "")
-
-    else:
-        res["status"] = 405
-        res["message"] = "Please use POST method for route"
-    return res
+    return execute_code(script, int(id))
