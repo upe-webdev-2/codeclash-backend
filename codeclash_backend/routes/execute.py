@@ -67,6 +67,25 @@ def append_script(script : str, problem_info : dict) -> str:
 
     return script
 
+def execute_code(script : str, problem_index : int, room_name : str) -> None:
+    """
+    Executes user code through the JDOODLE API and returns a dictionary of information based on
+    the JDOODLE output.
+
+    Parameters
+    ---------------
+    script : str
+        A string of code written by the user
+    
+    problem_index : int
+        The index of the problem being solved by the user, which indicates the test_cases that should be 
+        appended to the script parameter.
+    
+    room_name : str
+        The room name of the users whose result will be emitted to.
+    """
+    return
+
 @execute.route('/<id>', methods = ["POST"])
 def index(id):
     
