@@ -62,18 +62,54 @@ def append_script(script : str, problem_info : dict, is_test = False) -> str:
             input_details = ""
             print("TEST_RESULT")
             if user_return != case.get("output"):
-                print("ERROR_OCCURED")
-                print("Inputs:")
+                print("TEST_FAILED")
+                print("Inputs:", end = " ")
                 print(*case.get("inputs"))
-                print("Your Output")
-                print(user_return)
-                print("Expected Output")
+                print("Expected Output", end = " ")
                 print(case.get("output"))
+                print("Your Output", end = " ")
+                print(user_return)
             else:
                 print("TEST_PASSED")
             """
 
     return script
+
+def parse_output(res : dict, test_cases : dict):
+    output = res.get("output")
+    parsed_result = {**res}
+    if output is None:
+        return {"error" : "Something went wrong with JDOODLE"}
+    
+    if "STARTING_TESTS" not in output:
+        return parsed_result
+    
+    output = output.split("STARTING_TESTS")[-1]
+    
+    test_results = []
+
+    output = output.replace("\n", "")
+    tests = output.split("TEST_RESULT")[1:]
+
+    for index, test in enumerate(tests):
+
+        if "TEST_FAILED" not in test and "TEST_PASSED" not in test:
+            continue
+
+        test_info = {}
+        if "TEST_FAILED" in test:
+            test_info["passed"] = False
+            test_info["userOutput"] = test.split("Your Output")[-1]
+        elif "TEST_PASSED" in test:
+            test_info["passed"] = True
+        
+        test_info["input"] = test_cases[index].get("inputs")
+        test_info["expectedOutput"] = test_cases[index].get("output")
+
+        test_results.append(test_info)
+    
+    parsed_result["testResults"] = test_results
+    return parsed_result
 
 def execute_code(script : str, problem_id : int, is_test = False, language = "python3", version_index = "3") -> None:
     """
@@ -118,10 +154,7 @@ def execute_code(script : str, problem_id : int, is_test = False, language = "py
 
     res = res.json()
 
-    return parse_output(res)
-
-def parse_output(res : dict):
-    return res
+    return parse_output(res, problem_info.get("testCases"))
 
 @execute.route('/<id>', methods = ["POST"])
 def index(id):
@@ -130,4 +163,6 @@ def index(id):
     script = post_body.get("script")
     language = post_body.get("language")
 
-    return execute_code(script, int(id))
+    code_output = execute_code(script, int(id))
+
+    return code_output

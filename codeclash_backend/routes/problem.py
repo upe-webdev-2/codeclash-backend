@@ -106,7 +106,7 @@ array = [{
 
 
 @problem.route('/<int:id>')
-def specific_problem(id):
+def specific_problem(id : int):
     if id >= len(array) or id < 0:
         return {'status':404, 'message':'invalid query parameter called id'}
     return array[id]
