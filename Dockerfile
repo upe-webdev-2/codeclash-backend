@@ -11,4 +11,4 @@ RUN pip install -e .
 
 EXPOSE 5000
 
-ENTRYPOINT ["flask", "--app", "codeclash_backend", "run", "-h", "0.0.0.0", "-p", "5000"]
+ENTRYPOINT ["python", "startup.py"]
