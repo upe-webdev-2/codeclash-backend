@@ -31,7 +31,7 @@ array = [{
             }
         ],
         "starterCode": 'def twoSum(nums: List[int], target: int) -> List[int]:\n\t# Code here...\n\tpass',
-        "testCases": [{"inputs": [[2,7,11,15], 9], "output": 4}, {"inputs": [4], "output": 16}],
+        "testCases": [{"inputs": [[2,7,11,15], 9], "output": [0,1]}, {"inputs": [[1,1,2,3,4,6,7], 8], "output": [2,5]}],
         "functionName": "twoSum"
         },{    
         "id": 1,
@@ -106,7 +106,7 @@ array = [{
 
 
 @problem.route('/<int:id>')
-def specific_problem(id):
+def specific_problem(id : int):
     if id >= len(array) or id < 0:
         return {'status':404, 'message':'invalid query parameter called id'}
     return array[id]
