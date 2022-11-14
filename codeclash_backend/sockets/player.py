@@ -50,10 +50,9 @@ def player_leave(data):
 
 @socketio.on("playerWin", namespace = namespace)
 def player_win(data):
-    won_player_id = request.sid
     won_player_name = data.get("username")
 
-    room = find_room(won_player_name, won_player_id)
+    room = find_room(won_player_name)
 
     if len(room) == 0:
         # User not in a room. Maybe return an error?
@@ -80,7 +79,7 @@ def player_test(data):
     result = execute_code(user_code, problem_id, True)
     emit("playerTestResult", {**result})
 
-@socketio.on("playerTest", namespace = namespace)
+@socketio.on("playerSubmit", namespace = namespace)
 def player_test(data):
     user_code = data.get("userCode")
     player_name = data.get("username")
@@ -89,4 +88,8 @@ def player_test(data):
     problem_id = room.get("roomInfo").get("problemID")
 
     result = execute_code(user_code, problem_id)
-    emit("playerSubmitResult", {**result})
+
+    if result.get("passedAllCasses"):
+        player_win({"username" : player_name})
+    else:
+        emit("playerSubmitResult", {**result})

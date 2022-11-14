@@ -75,7 +75,7 @@ def append_script(script : str, problem_info : dict, is_test = False) -> str:
 
     return script
 
-def parse_output(res : dict, test_cases : dict):
+def parse_output(res : dict, test_cases : dict, is_test = False):
     output = res.get("output")
     parsed_result = {**res}
     if output is None:
@@ -111,7 +111,7 @@ def parse_output(res : dict, test_cases : dict):
 
         test_results.append(test_info)
     
-    if has_failed_test and not is_test:
+    if not is_test:
         parsed_result["passedAllCases"] = passed_all_cases
     
     parsed_result["testResults"] = test_results
@@ -160,7 +160,7 @@ def execute_code(script : str, problem_id : int, is_test = False, language = "py
 
     res = res.json()
 
-    return parse_output(res, problem_info.get("testCases"))
+    return parse_output(res, problem_info.get("testCases"), is_test)
 
 @execute.route('/<id>', methods = ["POST"])
 def index(id):
