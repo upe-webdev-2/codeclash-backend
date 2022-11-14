@@ -91,6 +91,8 @@ def parse_output(res : dict, test_cases : dict):
     output = output.replace("\n", "")
     tests = output.split("TEST_RESULT")[1:]
 
+    passed_all_cases = True
+
     for index, test in enumerate(tests):
 
         if "TEST_FAILED" not in test and "TEST_PASSED" not in test:
@@ -98,6 +100,7 @@ def parse_output(res : dict, test_cases : dict):
 
         test_info = {}
         if "TEST_FAILED" in test:
+            passed_all_cases = False
             test_info["passed"] = False
             test_info["userOutput"] = test.split("Your Output")[-1]
         elif "TEST_PASSED" in test:
@@ -107,6 +110,9 @@ def parse_output(res : dict, test_cases : dict):
         test_info["expectedOutput"] = test_cases[index].get("output")
 
         test_results.append(test_info)
+    
+    if has_failed_test and not is_test:
+        parsed_result["passedAllCases"] = passed_all_cases
     
     parsed_result["testResults"] = test_results
     return parsed_result

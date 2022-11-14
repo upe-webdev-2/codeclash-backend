@@ -77,5 +77,16 @@ def player_test(data):
     room_name = room.get("roomName")
     problem_id = room.get("roomInfo").get("problemID")
 
+    result = execute_code(user_code, problem_id, True)
+    emit("playerTestResult", {**result})
+
+@socketio.on("playerTest", namespace = namespace)
+def player_test(data):
+    user_code = data.get("userCode")
+    player_name = data.get("username")
+    room = find_room(player_name)
+    room_name = room.get("roomName")
+    problem_id = room.get("roomInfo").get("problemID")
+
     result = execute_code(user_code, problem_id)
-    # DO SOMETHING WITH RESULT
+    emit("playerSubmitResult", {**result})
