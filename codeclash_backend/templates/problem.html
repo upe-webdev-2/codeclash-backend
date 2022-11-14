@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>problem</title>
+</head>
+<body>
+
+    <div><strong><h1 style="font-family:'Times New Roman', Times, serif ;">Specific Problem:</h1></strong></div>
+    <h2>Finds specific problem based on id passed into the route.</h2>
+        <p>
+        <h3>Parameters</h3><br>
+        
+        <strong>id : int</strong><br>
+
+            <em>The index of the problem in the database needed to be returned to the user.</em>
+        </p>
+        <strong>Returns</strong><br>
+        
+            <em>Returns a dictionary containing the information of a problem.</em>
+        <p>
+            <h3>Example problem structure:</h3><br>
+            <pre><code>
+              
+            {
+            "id": 1,<br>
+            "title": "Two Sum",<br>
+            "difficulty": "Easy",<br>
+            "objectives": [<br>
+                "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.", <br>
+                "You may assume that each input would have exactly one solution, and you may not use the same element twice.",<br>
+                "You can return the answer in any order."<br>
+            ],<br>
+            "examples": [<br>
+                {<br>
+                "input": "nums = [2,7,11,15], target = 9",<br>
+                "output": "[0,1]",<br>
+                "explanation": "Because nums[0] + nums[1] == 9, we return [0, 1]."<br>
+                },<br>
+                {<br>
+                "input": "nums = [3,2,4], target = 6",<br>
+                "output": "[1,2]"<br>
+                },<br>
+                {<br>
+                "input": "nums = [3,3], target = 6",<br>
+                "output": "[0,1]"<br>
+                }<br>
+            ],<br>
+            "starterCode": "def twoSum(nums: List[int], target: int) -> List[int]:\n\t# Code here...\n\tpass",<br>
+            # NEW FIELDS<br>
+            time: "T00:05:00",  # AMOUNT OF TIME PLAYER HAS FOR THE QUESTION,<br>
+            testCases: [{ # CASES THE USER CODE IS GOING TO BE CHECKED WITH<br>
+                "inputs": [[2,7,11,15], 9] <br>
+                "output": [0,1]<br>
+            }, {<br>
+                "inputs": [[3,2,4], 6]<br>
+                "output": [1,2]<br>
+            }, {<br>
+                "inputs": [[3,3], 6]<br>
+                "output": [0,1]<br>
+            }],<br>
+            "functionName" : "twoSum",<br>
+            }
+            </code></pre>
+        """<br>
+        if id >= len(array) or id < 0:<br>
+            return {'status':404, 'message':'invalid query parameter called id'}<br>
+        return array[id] <br>
+        </p>
+        
+        <div><strong><h1 style="font-family:'Times New Roman', Times, serif ;">Random Problem:</h1></strong></div>
+        <h2>Finds random problem from the database of problems, which the users will answer.</h2>
+            <p>
+            <div><h3>Returns</h3>
+        
+            <i>Returns a dictionary containing the information of a problem.</i>
+            <div>
+        
+            <h3>Example problem structure:</h3>
+                {
+                "id": 1,<br>
+                "title": "Two Sum",<br>
+                "difficulty": "Easy",<br>
+                "objectives": [<br>
+                    "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",<br>
+                    "You may assume that each input would have exactly one solution, and you may not use the same element twice.",<br>
+                    "You can return the answer in any order."<br>
+                ],<br>
+                "examples": [<br>
+                    {<br>
+                    "input": "nums = [2,7,11,15], target = 9",<br>
+                    "output": "[0,1]",<br>
+                    "explanation": "Because nums[0] + nums[1] == 9, we return [0, 1]."<br>
+                    },<br>
+                    {<br>
+                    "input": "nums = [3,2,4], target = 6",<br>
+                    "output": "[1,2]"<br>
+                    },<br>
+                    {<br>
+                    "input": "nums = [3,3], target = 6",<br>
+                    "output": "[0,1]"<br>
+                    }<br>
+                ],<br>
+                "starterCode": "def twoSum(nums: List[int], target: int) -> List[int]:\n\t# Code here...\n\tpass",<br>
+                # NEW FIELDS<br>
+                time: "T00:05:00",  # AMOUNT OF TIME PLAYER HAS FOR THE QUESTION,<br>
+                testCases: [{ # CASES THE USER CODE IS GOING TO BE CHECKED WITH<br>
+                    "inputs": [[2,7,11,15], 9] <br>
+                    "output": [0,1]<br>
+                }, {<br>
+                    "inputs": [[3,2,4], 6]<br>
+                    "output": [1,2]<br>
+                }, {<br>
+                    "inputs": [[3,3], 6]<br>
+                    "output": [0,1]<br>
+                }],<br>
+                "functionName" : "twoSum", <br> 
+                }<br>
+            """<br>
+            return random.choice(array)</p>
+</body>
+</html>
