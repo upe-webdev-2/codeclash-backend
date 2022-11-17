@@ -1,0 +1,103 @@
+generator client {
+  provider             = "prisma-client-py"
+  interface            = "asyncio"
+  recursive_type_depth = "5"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  User              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model MatchHistory {
+  id                                String   @id
+  roomId                            String?
+  player1Id                         String
+  player2Id                         String
+  problemId                         String
+  matchStartTimestamp               DateTime @default(now())
+  matchEndTimestamp                 DateTime
+  winner                            Winner   @default(Ongoing)
+  winningcode                       String?
+  losingcode                        String?
+  User_MatchHistory_player1IdToUser User     @relation("MatchHistory_player1IdToUser", fields: [player1Id], references: [id])
+  User_MatchHistory_player2IdToUser User     @relation("MatchHistory_player2IdToUser", fields: [player2Id], references: [id])
+  Problem                           Problem  @relation(fields: [problemId], references: [id])
+}
+
+model Problem {
+  id            String            @id
+  problemNumber Int               @unique @default(autoincrement())
+  title         String
+  difficulty    ProblemDifficulty
+  objectives    String[]
+  examples      String[]
+  starterCode   String
+  testCases     String[]
+  functionName  String
+  MatchHistory  MatchHistory[]
+
+  @@index([problemNumber])
+}
+
+model Session {
+  id           String   @id
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  User         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id                                        String         @id
+  name                                      String?
+  email                                     String         @unique
+  emailVerified                             DateTime?
+  xp                                        Int            @default(0)
+  image                                     String?
+  Account                                   Account[]
+  MatchHistory_MatchHistory_player1IdToUser MatchHistory[] @relation("MatchHistory_player1IdToUser")
+  MatchHistory_MatchHistory_player2IdToUser MatchHistory[] @relation("MatchHistory_player2IdToUser")
+  Session                                   Session[]
+
+  @@index([email])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum ProblemDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum Winner {
+  Player1
+  Player2
+  Draw
+  Ongoing
+}
