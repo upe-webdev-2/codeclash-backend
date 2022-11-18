@@ -8,7 +8,6 @@ setup(
         'flask',
         'python-dotenv',
         'requests',
-        'flask[async]',
         'flask-socketio',
         'simple-websocket',
         'eventlet',

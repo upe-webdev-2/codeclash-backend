@@ -10,6 +10,7 @@ socketio = SocketIO(cors_allowed_origins = "*")
 
 def create_app():
     """Create an application."""
+    prisma.connect()
 
     debug = os.environ.get("IS_DEBUG")
 
