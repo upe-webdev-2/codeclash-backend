@@ -14,4 +14,4 @@ def get_users(email):
     if data is None:
         return {"status" : 404, data : None}
 
-    return {"status" : 200, "data" : data.json()}
+    return {"status" : 200, "data" : data.dict()} # only include non-sensitive information
