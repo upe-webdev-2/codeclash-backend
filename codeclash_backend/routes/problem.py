@@ -107,10 +107,111 @@ array = [{
 
 @problem.route('/<int:id>')
 def specific_problem(id : int):
+    r"""
+    Finds specific problem based on id passed into the route.
+
+    Parameters
+    ---------------
+    id : int
+        The index of the problem in the database needed to be returned to the user.
+    
+    Returns
+    -------------
+    Returns a dictionary containing the information of a problem.
+
+    Example problem structure:
+        {
+        "id": 1,
+        "title": "Two Sum",
+        "difficulty": "Easy",
+        "objectives": [
+            "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
+            "You may assume that each input would have exactly one solution, and you may not use the same element twice.",
+            "You can return the answer in any order."
+        ],
+        "examples": [
+            {
+            "input": "nums = [2,7,11,15], target = 9",
+            "output": "[0,1]",
+            "explanation": "Because nums[0] + nums[1] == 9, we return [0, 1]."
+            },
+            {
+            "input": "nums = [3,2,4], target = 6",
+            "output": "[1,2]"
+            },
+            {
+            "input": "nums = [3,3], target = 6",
+            "output": "[0,1]"
+            }
+        ],
+        "starterCode": "def twoSum(nums: List[int], target: int) -> List[int]:\n\t# Code here...\n\tpass",
+        # NEW FIELDS
+        time: "T00:05:00",  # AMOUNT OF TIME PLAYER HAS FOR THE QUESTION,
+        testCases: [{ # CASES THE USER CODE IS GOING TO BE CHECKED WITH
+            "inputs": [[2,7,11,15], 9] 
+            "output": [0,1]
+        }, {
+            "inputs": [[3,2,4], 6]
+            "output": [1,2]
+        }, {
+            "inputs": [[3,3], 6]
+            "output": [0,1]
+        }],
+        "functionName" : "twoSum",   
+        }
+    """
     if id >= len(array) or id < 0:
         return {'status':404, 'message':'invalid query parameter called id'}
     return array[id]
     
 @problem.route('/')
 def rand_problem():
+    r"""
+    Finds random problem from the database of problems, which the users will answer.
+
+    Returns
+    -----------------
+    Returns a dictionary containing the information of a problem.
+
+    Example problem structure:
+        {
+        "id": 1,
+        "title": "Two Sum",
+        "difficulty": "Easy",
+        "objectives": [
+            "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
+            "You may assume that each input would have exactly one solution, and you may not use the same element twice.",
+            "You can return the answer in any order."
+        ],
+        "examples": [
+            {
+            "input": "nums = [2,7,11,15], target = 9",
+            "output": "[0,1]",
+            "explanation": "Because nums[0] + nums[1] == 9, we return [0, 1]."
+            },
+            {
+            "input": "nums = [3,2,4], target = 6",
+            "output": "[1,2]"
+            },
+            {
+            "input": "nums = [3,3], target = 6",
+            "output": "[0,1]"
+            }
+        ],
+        "starterCode": "def twoSum(nums: List[int], target: int) -> List[int]:\n\t# Code here...\n\tpass",
+        # NEW FIELDS
+        time: "T00:05:00",  # AMOUNT OF TIME PLAYER HAS FOR THE QUESTION,
+        testCases: [{ # CASES THE USER CODE IS GOING TO BE CHECKED WITH
+            "inputs": [[2,7,11,15], 9] 
+            "output": [0,1]
+        }, {
+            "inputs": [[3,2,4], 6]
+            "output": [1,2]
+        }, {
+            "inputs": [[3,3], 6]
+            "output": [0,1]
+        }],
+        "functionName" : "twoSum",   
+        }
+    """
     return random.choice(array)
