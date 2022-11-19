@@ -1,5 +1,4 @@
 from codeclash_backend import app
-from flask import Flask, redirect, url_for, request
 
 from .problem import problem
 from .execute import execute

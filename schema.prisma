@@ -49,9 +49,9 @@ model Problem {
   title         String
   difficulty    ProblemDifficulty
   objectives    String[]
-  examples      String[]
+  examples      Json[]
   starterCode   String
-  testCases     String[]
+  testCases     Json[]
   functionName  String
   MatchHistory  MatchHistory[]
 

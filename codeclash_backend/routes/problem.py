@@ -1,11 +1,12 @@
-from array import array
 import random
+from typing import Union
+
 from flask import Blueprint
+from prisma import Json, enums
+
+from codeclash_backend import prisma
 
 problem = Blueprint('problem', __name__)
-#store problems in a dictionary
-#return a random question 
-#user could do /problem /1 that returs the problem at index 1 of the array
 array = [{
         "id": 0,
         "title": "Two Sum",
@@ -104,13 +105,38 @@ array = [{
         "functionName": "romanToInteger"
         }]
 
-
-@problem.route('/<int:id>')
-def specific_problem(id : int):
-    if id >= len(array) or id < 0:
-        return {'status':404, 'message':'invalid query parameter called id'}
-    return array[id]
+def specific_problem(id : str) -> Union[dict, None]:
+    data = prisma.problem.find_unique(
+        where = {
+            "id" : id
+        }
+    )
     
-@problem.route('/')
-def rand_problem():
-    return random.choice(array)
+    if data is None:
+        return None
+    
+    return data.dict()
+
+def rand_problem() -> Union[dict, None]:
+    problem_count = prisma.problem.count()
+
+    if problem_count == 0:
+        return None
+    
+    random_id = random.randint(0, problem_count - 1)
+
+    problem = prisma.problem.find_unique(where = {
+        "id" : str(random_id)
+    })
+
+    return problem.dict()
+
+@problem.route('/<string:id>', methods = ["GET"])
+def specific_problem_route(id : str):
+    data = specific_problem(id)
+    return {"status" : 404} if data is None else {"status" : 200, "data" : data.dict()}
+    
+@problem.route('/', methods = ["GET"])
+def rand_problem_route():
+    data = rand_problem()
+    return {"status" : 404} if data is None else {"status" : 200, "data" : data}
