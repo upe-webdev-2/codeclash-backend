@@ -1,0 +1,20 @@
+*{
+margin: 10px;
+box-sizing: border-box;
+font-family: "poppins', sans-serif;
+}
+
+#body{
+background-color: azure;
+}
+
+
+.header {
+    text-align: center;
+    background-color: cornsilk;
+    color: red;
+  }
+
+.header1{
+    text-align: center;
+}
