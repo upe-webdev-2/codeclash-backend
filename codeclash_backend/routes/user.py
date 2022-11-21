@@ -12,4 +12,4 @@ def get_users(email):
     if data is None:
         return {"status" : 404}
 
-    return {"status" : 200, "data" : data} # FIX: only include non-sensitive information
+    return {"status" : 200, "data" : data.dict}
