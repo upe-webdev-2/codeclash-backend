@@ -1,7 +1,7 @@
 import random
-from typing import Union
+from typing import Union, TypedDict
 
-from flask import Blueprint
+from flask import Blueprint, request
 from prisma import Json, enums
 
 from codeclash_backend import prisma
@@ -140,3 +140,15 @@ def specific_problem_route(id : str):
 def rand_problem_route():
     data = rand_problem()
     return {"status" : 404} if data is None else {"status" : 200, "data" : data}
+
+@problem.route('/', methods = ["POST"])
+def add_problem():
+    post_body = request.json
+
+    not_enough_data = {"status" : 400}
+
+    if post_body.get("problemNumber") is not None:
+        not_enough_data["message"] = "problemNumber is not passed"
+        return not_enough_data
+    
+    return
