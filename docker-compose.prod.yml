@@ -47,7 +47,7 @@ services:
       # map config files into the container
       - ./user_conf.d:/etc/nginx/user_conf.d
     depends_on:
-      - pe-portfolio-site
+      - backend
 # define a volume that will persist if containers are recreated
 volumes:
   pgdata:
