@@ -7,6 +7,7 @@ from prisma import Json, enums
 from codeclash_backend import prisma
 
 problem = Blueprint('problem', __name__)
+
 array = [{
         "id": 0,
         "title": "Two Sum",
@@ -134,7 +135,7 @@ def rand_problem() -> Union[dict, None]:
 @problem.route('/<string:id>', methods = ["GET"])
 def specific_problem_route(id : str):
     data = specific_problem(id)
-    return {"status" : 404} if data is None else {"status" : 200, "data" : data.dict()}
+    return {"status" : 404} if data is None else {"status" : 200, "data" : data}
     
 @problem.route('/', methods = ["GET"])
 def rand_problem_route():
@@ -143,12 +144,4 @@ def rand_problem_route():
 
 @problem.route('/', methods = ["POST"])
 def add_problem():
-    post_body = request.json
-
-    not_enough_data = {"status" : 400}
-
-    if post_body.get("problemNumber") is not None:
-        not_enough_data["message"] = "problemNumber is not passed"
-        return not_enough_data
-    
     return
