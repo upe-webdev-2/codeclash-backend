@@ -89,7 +89,7 @@ def player_test(data):
 
     result = execute_code(user_code, problem_id)
 
-    if result.get("passedAllCasses"):
+    if result.get("passedAllCases"):
         player_win({"username" : player_name})
     else:
         emit("playerSubmitResult", {**result})
