@@ -1,11 +1,14 @@
 *{
 margin: 10px;
 box-sizing: border-box;
+
 font-family: "poppins', sans-serif;
+
 }
 
-#body{
-background-color: azure;
+body{
+background-color: #0F1021;
+color: aliceblue;
 }
 
 
@@ -13,8 +16,15 @@ background-color: azure;
     text-align: center;
     background-color: cornsilk;
     color: red;
+    
+    
   }
 
 .header1{
     text-align: center;
 }
+
+.code_example{
+background-color: #232323
+}
+

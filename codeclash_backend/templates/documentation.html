@@ -14,15 +14,16 @@
         
         <div id = "subheading"><h3>Parameters</h3></div>
         
-        <strong>id : int</strong>
+        <strong>id : int</strong><br>
 
-            <em>The index of the problem in the database needed to be returned to the user.</em>
+            <em>The index of the problem in the database needed to be returned to the user.</em><br>
         
-        <strong>Returns</strong>
+        <h3><strong>Returns</strong></h3>
         
-            <em>Returns a dictionary containing the information of a problem.</em>
+            <em>Returns a dictionary containing the information of a problem.</em><br>
         <p>
             <h3>Example problem structure:</h3>
+        <div class = "code_example">
             <pre><code>
             {
             "id": 1,
@@ -67,8 +68,9 @@
         """
         if id >= len(array) or id < 0:
             return {'status':404, 'message':'invalid query parameter called id'}
-        return array[id] <br>
+        return array[id] 
             </code></pre>
+        </div>    
         </p>
         
         
@@ -77,10 +79,12 @@
         <p>
         <strong>Returns</strong>
         
-            <em>Returns a dictionary containing the information of a problem.</em>
+            <em>Returns a dictionary containing the information of a problem.</em><br>
             
         
             <h3>Example problem structure:</h3>
+       
+        <div class = "code_example">
             <pre><code>
                 {
                 "id": 1,
@@ -123,7 +127,8 @@
                 }  
             """
             return random.choice(array)
-        </code></pre>
+            </code></pre>
+        </div>
     </p>
 </body>
 </html>
