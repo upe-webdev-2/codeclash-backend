@@ -1,4 +1,4 @@
-`#!/bin/bash
+#!/bin/bash
 
 # cd into working dir
 cd ~/codeclash/codeclash_backend
