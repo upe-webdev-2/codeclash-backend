@@ -1,0 +1,24 @@
+* {
+  box-sizing: border-box;
+  font-family: "poppins", sans-serif;
+}
+
+body {
+  background-color: #0f1021;
+  color: aliceblue;
+}
+
+.header {
+  text-align: center;
+  background-color: cornsilk;
+  color: red;
+}
+
+.header1 {
+  text-align: center;
+}
+
+.code_example pre {
+  background-color: #232323;
+  width: fit-content;
+}
