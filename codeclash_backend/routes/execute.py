@@ -1,48 +1,11 @@
 import os
 import requests
+
+from typing import Union
 from flask import Blueprint, request
 
 from codeclash_backend import socketio
 from .problem import specific_problem
-
-array = [{
-        "id": 1,
-        "title": "Two Sum",
-        "difficulty": "Easy",
-        "objectives": [
-            "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
-            "You may assume that each input would have exactly one solution, and you may not use the same element twice.",
-            "You can return the answer in any order."
-        ],
-        "examples": [
-            {
-            "input": "nums = [2,7,11,15], target = 9",
-            "output": "[0,1]",
-            "explanation": "Because nums[0] + nums[1] == 9, we return [0, 1]."
-            },
-            {
-            "input": "nums = [3,2,4], target = 6",
-            "output": "[1,2]"
-            },
-            {
-            "input": "nums = [3,3], target = 6",
-            "output": "[0,1]"
-            }
-        ],
-        "starterCode": 'def twoSum(nums: List[int], target: int) -> List[int]:\n\t# Code here...\n\tpass',
-        "testCases": [{"inputs": [[2,7,11,15], 9], "output": 4}, {"inputs": [4], "output": 16}],
-        "functionName": "twoSum",
-        "testCases": [{
-            "inputs": [[2,7,11,15], 9], 
-            "output": [0,1]
-        }, {
-            "inputs": [[3,2,4], 6],
-            "output": [1,2]
-        }, {
-            "inputs": [[3,3], 6],
-            "output": [0,1]
-        }]
-    }]
 
 execute = Blueprint('execute', __name__)
 
@@ -95,7 +58,7 @@ def append_script(script : str, problem_info : dict, is_test = False) -> str:
 
     return script
 
-def parse_output(res : dict, test_cases : dict, is_test = False):
+def parse_output(res : dict, test_cases : dict, is_test = False) -> dict:
     output = res.get("output")
     parsed_result = {**res}
     if output is None:
@@ -137,7 +100,7 @@ def parse_output(res : dict, test_cases : dict, is_test = False):
     parsed_result["testResults"] = test_results
     return parsed_result
 
-def execute_code(script : str, problem_id : int, is_test = False, language = "python3", version_index = "3") -> None:
+def execute_code(script : str, problem_id : str, is_test = False, language = "python3", version_index = "3") -> Union[dict, None]:
     """
     Executes user code through the JDOODLE API and returns a dictionary of information based on
     the JDOODLE output.
@@ -162,6 +125,10 @@ def execute_code(script : str, problem_id : int, is_test = False, language = "py
     """
 
     problem_info = specific_problem(problem_id)
+
+    if problem_info is None:
+        return None
+    
     processed_script = append_script(script, problem_info, is_test)
 
     res = {}
@@ -169,8 +136,8 @@ def execute_code(script : str, problem_id : int, is_test = False, language = "py
     url = "https://api.jdoodle.com/v1/execute"
     headers = {"Content-type" : "application/json"}
     data = {
-        "clientId": os.environ.get("CLIENT_ID"),
-        "clientSecret": os.environ.get("CLIENT_SECRET"),
+        "clientId": os.environ.get("JDOODLE_CLIENT_ID"),
+        "clientSecret": os.environ.get("JDOODLE_CLIENT_SECRET"),
         "script": processed_script,
         "language": language,
         "versionIndex": version_index
@@ -182,8 +149,8 @@ def execute_code(script : str, problem_id : int, is_test = False, language = "py
 
     return parse_output(res, problem_info.get("testCases"), is_test)
 
-@execute.route('/<id>', methods = ["POST"])
-def index(id):
+@execute.route('/<string:id>', methods = ["POST"])
+def index(id : str):
     """
     Returns the result of executing the user's code through the JDOODLE api. Before being run, the user code is appended by the append_script function.
 
@@ -194,8 +161,7 @@ def index(id):
     """
     post_body = request.json
     script = post_body.get("script")
-    language = post_body.get("language")
 
-    code_output = execute_code(script, int(id))
+    code_output = execute_code(script, id)
 
-    return code_output
+    return {"status": 404} if code_output is None else {"status" : 200, "data" : code_output}
