@@ -107,6 +107,19 @@ array = [{
         }]
 
 def specific_problem(id : str) -> Union[dict, None]:
+    r"""
+    Finds specific problem based on id passed into the route.
+
+    Parameters
+    ---------------
+    id : str
+        The index of the problem in the database needed to be returned to the user.
+    
+    Returns
+    -------------
+    Returns a dictionary containing the information of a problem.
+    """
+    
     data = prisma.problem.find_unique(
         where = {
             "id" : id
@@ -119,8 +132,15 @@ def specific_problem(id : str) -> Union[dict, None]:
     return data.dict()
 
 def rand_problem() -> Union[dict, None]:
-    problem_count = prisma.problem.count()
+    r"""
+    Finds random problem from the database of problems, which the users will answer.
 
+    Returns
+    -----------------
+    Returns a dictionary containing the information of a problem.
+    """
+    problem_count = prisma.problem.count()
+    
     if problem_count == 0:
         return None
     

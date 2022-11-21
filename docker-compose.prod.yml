@@ -1,0 +1,54 @@
+# specify docker file version
+version: "3"
+# define list of services 
+services:
+  # define myportfolio service
+  backend:
+    container_name: backend
+    # define service will be built with dockerfile in current directory
+    build: .
+    # restart on reboot or error
+    restart: always
+    # define file containing enviornment variables
+    env_file:
+      - .env
+    # specify container should start after mysql service is up
+    depends_on:
+      - postgres
+  
+  # define mysql service
+  postgres:
+    container_name: postgres
+    # lower resource usage than mysql
+    image: postgres
+    # restart on error or reboot
+    restart: always
+    # define file containing enviornemnt variables
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgres/data
+  
+  # define nginx container
+  nginx:
+    container_name: nginx
+    image: jonasal/nginx-certbot
+    restart: always
+    # generates certificates
+    environment:
+      - CERTBOT_EMAIL=gino.rey@outlook.com
+    # bind ports to the internet
+    ports:
+      - 80:80
+      - 443:443
+    # store certificate files in a volume
+    volumes:
+      - nginx_secrets:/etc/letsencrypt
+      # map config files into the container
+      - ./user_conf.d:/etc/nginx/user_conf.d
+    depends_on:
+      - backend
+# define a volume that will persist if containers are recreated
+volumes:
+  pgdata:
+  nginx_secrets:

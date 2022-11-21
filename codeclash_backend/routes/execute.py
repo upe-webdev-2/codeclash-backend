@@ -3,12 +3,32 @@ import requests
 
 from typing import Union
 from flask import Blueprint, request
+
 from codeclash_backend import socketio
 from .problem import specific_problem
 
 execute = Blueprint('execute', __name__)
 
 def append_script(script : str, problem_info : dict, is_test = False) -> str:
+    """
+    Returns a string appended with test cases, which would be run through the JDOODLE api.
+    
+    Paramaters
+    -----------------
+    script : str
+        The initial code written by the user, represented as a string, obtained as a body parameter in the /execute route.
+    problem_info : dict
+        Information on problem being completed by the user, obtained through the /problem route (or access to database).
+        The route number needed for this information can be obtained as a route parameter in the /execute call.
+    is_test : boolean
+        Boolean determining whether the user is running only one test case or all test cases
+    
+    Returns
+    -----------------
+    str
+        A string containing the initial script passed by the user appended with test case code.
+
+    """
     test_cases = problem_info.get("testCases")
 
     if is_test:
@@ -131,7 +151,14 @@ def execute_code(script : str, problem_id : str, is_test = False, language = "py
 
 @execute.route('/<string:id>', methods = ["POST"])
 def index(id : str):
-    
+    """
+    Returns the result of executing the user's code through the JDOODLE api. Before being run, the user code is appended by the append_script function.
+
+    Parameters
+    --------------
+    id: int
+        An integer representing the id of a the problem the user is solving. Used to query the database of problems for the append_script function.
+    """
     post_body = request.json
     script = post_body.get("script")
 
