@@ -13,7 +13,11 @@ def find_room(username = None, user_id = None) -> dict:
         room_info = rooms.get(room)
         players = room_info.get("players")
         problem_id = room_info.get("problemID")
-        if user_id in room or username in players:
+
+        if user_id is not None and user_id in room:
+            return {"roomName" : room, "roomInfo" : room_info}
+
+        if username is not None and username in players:
             return {"roomName" : room, "roomInfo" : room_info}
     
     return {}
