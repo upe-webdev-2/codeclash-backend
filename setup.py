@@ -9,6 +9,7 @@ setup(
         'python-dotenv',
         'requests',
         'flask-socketio',
-        'simple-websocket'
+        'simple-websocket',
+        'eventlet'
     ],
 )

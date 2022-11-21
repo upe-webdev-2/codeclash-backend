@@ -1,17 +1,17 @@
 import os
 from flask import Flask
 from flask_socketio import SocketIO
-from dotenv import load_dotenv
-
-load_dotenv()
 
 app = Flask(__name__)
 
 socketio = SocketIO(cors_allowed_origins = "*")
 
-def create_app(debug = False):
+def create_app():
     """Create an application."""
-    app.debug = debug
+
+    debug = os.environ.get("IS_DEBUG")
+
+    app.debug = True if debug == "TRUE" else False
     app.config['SECRET_KEY'] = os.environ.get("SOCKET_IO_KEY")
 
     import codeclash_backend.routes
