@@ -9,6 +9,8 @@ COPY . /codeclash_backend/
 
 RUN pip install -e .
 
-EXPOSE 5000
+EXPOSE 8000
+
+RUN ["prisma", "generate"]
 
 ENTRYPOINT ["python", "startup.py"]
