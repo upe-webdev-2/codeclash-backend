@@ -46,7 +46,8 @@ def queue_to_waiting(player_id : str, player_name : str):
     waiting_room.append((player_id, player_name))
 
 def in_waiting_room(player_id : str = None, player_name : str = None) -> bool:
-    for p_id, p_name in waiting_room:
+    for p_info in waiting_room:
+        p_id, p_name = p_info
         if player_id is not None and player_id == p_id:
             return True
         if player_name is not None and player_name == p_name:
@@ -67,6 +68,10 @@ def create_room(room_name : str, first_player_name : str, second_player_name : s
 
 def delete_room(room_name : str):
     del rooms[room_name]
+
+def reset_rooms():
+    waiting_room.clear()
+    rooms.clear()
 
 def set_problem(room_name : str):
     room = rooms.get(room_name)
