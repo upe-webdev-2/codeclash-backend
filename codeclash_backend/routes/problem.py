@@ -61,7 +61,7 @@ array = [{
             "output": "False"
             }
         ],
-        "starterCode": 'def isValid(self, s): \n\t# Code here...\n\t',
+        "starterCode": 'def isValid(s : str) -> bool: \n\t# Code here...\n\t',
         "testCases": [{"inputs": ["()"], "output": True}, {"inputs": ["(]"], "output": False}, {"inputs": ["()[]{}"], "output": True}],
         "functionName": "validParentheses"
         },{
@@ -101,9 +101,9 @@ array = [{
             "output": "1994",
             "explanation": "M = 1000, CM = 900, XC = 90 and IV = 4"
             }],
-        "starterCode": 'def romanToInt(self, s: str) -> int:\n\t# Code here...\n\t',
+        "starterCode": 'def romanToInt(s: str) -> int:\n\t# Code here...\n\t',
         "testCases": [{"inputs": ["III"], "output": 3}, {"inputs": ["LVIII"], "output": 58}, {"inputs": ["MCMXCIV"], "output": 1994}],
-        "functionName": "romanToInteger"
+        "functionName": "romanToInt"
         }]
 
 def specific_problem(id : str) -> Union[dict, None]:
