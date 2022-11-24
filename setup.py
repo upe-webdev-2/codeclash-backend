@@ -12,5 +12,6 @@ setup(
         'simple-websocket',
         'eventlet',
         'prisma',
+        'coverage'
     ],
 )
