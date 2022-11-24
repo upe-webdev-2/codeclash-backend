@@ -40,7 +40,7 @@ def player_leave(data):
         remove_from_waiting_room(lost_player_id, lost_player_name)
         return
 
-    room = find_room(lost_player_name, lost_player_id)
+    room = find_room(username = lost_player_name, user_id = lost_player_id)
 
     if len(room) == 0:
         # User not in a room. Maybe return an error?
@@ -63,7 +63,7 @@ def player_leave(data):
 def player_win(data):
     won_player_name = data.get("username")
 
-    room = find_room(won_player_name)
+    room = find_room(username = won_player_name)
 
     if len(room) == 0:
         # User not in a room. Maybe return an error?
@@ -86,7 +86,7 @@ def player_win(data):
 def player_test(data):
     user_code = data.get("userCode")
     player_name = data.get("username")
-    room = find_room(player_name)
+    room = find_room(username = player_name)
     room_name = room.get("roomName")
     problem_id = room.get("roomInfo").get("problemID")
 
@@ -97,7 +97,7 @@ def player_test(data):
 def player_test(data):
     user_code = data.get("userCode")
     player_name = data.get("username")
-    room = find_room(player_name)
+    room = find_room(username = player_name)
     room_name = room.get("roomName")
     problem_id = room.get("roomInfo").get("problemID")
 
