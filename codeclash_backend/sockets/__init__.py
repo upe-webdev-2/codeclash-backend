@@ -43,6 +43,12 @@ def dequeue_from_waiting() -> tuple:
 def queue_to_waiting(player_id : str, player_name : str):
     waiting_room.append((player_id, player_name))
 
+def in_waiting_room(player_id : str, player_name : str):
+    return (player_id, player_name) in waiting_room
+
+def remove_from_waiting_room(player_id : str, player_name : str):
+    waiting_room.remove((player_id, player_name))
+
 def create_room(room_name : str, first_player_name : str, second_player_name : str):
     rooms[room_name] = {"players" : [first_player_name, second_player_name], "problemID" : None}
 

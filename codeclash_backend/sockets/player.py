@@ -1,5 +1,5 @@
 from codeclash_backend import socketio
-from . import already_playing, dequeue_from_waiting, queue_to_waiting, create_room, find_room, delete_room, amount_players_waiting
+from . import already_playing, dequeue_from_waiting, queue_to_waiting, create_room, find_room, delete_room, amount_players_waiting, in_waiting_room, remove_from_waiting_room
 from ..routes.execute import execute_code
 from ..routes.user import get_user
 from flask import request
@@ -35,6 +35,10 @@ def join_game(data):
 def player_leave(data):
     lost_player_id = request.sid
     lost_player_name = data.get("username")
+
+    if in_waiting_room(lost_player_id, lost_player_name):
+        remove_from_waiting_room(lost_player_id, lost_player_name)
+        return
 
     room = find_room(lost_player_name, lost_player_id)
 
