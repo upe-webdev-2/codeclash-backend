@@ -92,11 +92,46 @@ class TestSocketIO(unittest.TestCase):
         self.assertEqual(client_received[1]["name"], "finishedGame")
         self.assertEqual(client2_received[1]["name"], "finishedGame")
     
-    # def test_ready_game(self):
-    #     return
+    def test_ready_game(self):
+        client = socketio.test_client(self.app, namespace = "/play")
+        client_name = "client@email.com"
+
+        client2 = socketio.test_client(self.app, namespace = "/play")
+        client2_name = "client2@email.com"
+
+        client.emit("playerJoin", {"username" : client_name}, namespace = "/play")
+        client2.emit("playerJoin", {"username" : client2_name}, namespace = "/play")
+
+        room_name = client.get_received(namespace = "/play")[0]["args"][0].get("roomName")
+        
+        client.emit("readyGame", {"roomName" : room_name}, namespace = "/play")
+        client2.emit("readyGame", {"roomName" : room_name}, namespace = "/play")
+
+        client_received = client.get_received(namespace = "/play")
+        client2_received = client2.get_received(namespace = "/play")
+
+        self.assertEqual(client_received[-1]["name"], "startGame")
+        self.assertEqual(client2_received[-1]["name"], "startGame")
+
+        self.assertIn("problemInfo", client_received[-1]["args"][0])
+        self.assertIn("problemInfo", client2_received[-1]["args"][0])
     
-    # def test_player_test(self):
-    #     return
+    def test_player_test(self):
+        client = socketio.test_client(self.app, namespace = "/play")
+        client_name = "client@email.com"
+
+        client2 = socketio.test_client(self.app, namespace = "/play")
+        client2_name = "client2@email.com"
+
+        client.emit("playerJoin", {"username" : client_name}, namespace = "/play")
+        client2.emit("playerJoin", {"username" : client2_name}, namespace = "/play")
+
+        room_name = client.get_received(namespace = "/play")[0]["args"][0].get("roomName")
+        
+        client.emit("readyGame", {"roomName" : room_name}, namespace = "/play")
+        client2.emit("readyGame", {"roomName" : room_name}, namespace = "/play")
+
+        # Emit playerTest with created user_script
     
     # def test_player_submit(self):
     #     return
