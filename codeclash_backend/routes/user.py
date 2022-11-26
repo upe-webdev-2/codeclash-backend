@@ -4,7 +4,7 @@ from flask import Blueprint
 user = Blueprint('user', __name__)
 
 @user.route('/<string:email>')
-def get_users(email):
+def get_user(email):
     data = prisma.user.find_first(where = {
         "email" : email
     })
@@ -12,4 +12,4 @@ def get_users(email):
     if data is None:
         return {"status" : 404}
 
-    return {"status" : 200, "data" : data.dict}
+    return {"status" : 200, "data" : data.dict()}
