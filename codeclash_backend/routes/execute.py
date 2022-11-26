@@ -37,9 +37,7 @@ def append_script(script : str, problem_info : dict, is_test = False) -> str:
     function_name = problem_info.get("functionName")
     input_length = len(test_cases[0].get("inputs"))
 
-    script = """
-    from typing import *
-    """ + script
+    script = "from typing import *\n" + script
 
     script += """\nprint("STARTING_TESTS")"""
     script += f"""\ntest_cases = {test_cases}"""

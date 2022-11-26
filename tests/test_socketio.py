@@ -131,7 +131,31 @@ class TestSocketIO(unittest.TestCase):
         client.emit("readyGame", {"roomName" : room_name}, namespace = "/play")
         client2.emit("readyGame", {"roomName" : room_name}, namespace = "/play")
 
-        # Emit playerTest with created user_script
+        starter_code = client.get_received(namespace = "/play")[0]["args"][0].get("problemInfo").get("starterCode")
+        starter_code += "\n\treturn 1"
+
+        client.emit("playerTest",  {"username" : client_name, "userCode" : starter_code}, namespace = "/play")
+
+        self.assertEqual(client.get_received(namespace = "/play")[0]["name"], "playerTestResult")
     
-    # def test_player_submit(self):
-    #     return
+    def test_player_submit(self):
+        client = socketio.test_client(self.app, namespace = "/play")
+        client_name = "client@email.com"
+
+        client2 = socketio.test_client(self.app, namespace = "/play")
+        client2_name = "client2@email.com"
+
+        client.emit("playerJoin", {"username" : client_name}, namespace = "/play")
+        client2.emit("playerJoin", {"username" : client2_name}, namespace = "/play")
+
+        room_name = client.get_received(namespace = "/play")[0]["args"][0].get("roomName")
+        
+        client.emit("readyGame", {"roomName" : room_name}, namespace = "/play")
+        client2.emit("readyGame", {"roomName" : room_name}, namespace = "/play")
+
+        starter_code = client.get_received(namespace = "/play")[0]["args"][0].get("problemInfo").get("starterCode")
+        starter_code += "\n\treturn 1"
+
+        client.emit("playerSubmit",  {"username" : client_name, "userCode" : starter_code}, namespace = "/play")
+
+        self.assertEqual(client.get_received(namespace = "/play")[0]["name"], "playerSubmitResult")
