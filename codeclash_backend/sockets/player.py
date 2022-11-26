@@ -19,8 +19,8 @@ def join_game(data):
         second_player_id, second_player_name = dequeue_from_waiting()
         room_name = f"{first_player_id} {second_player_id}"
 
-        second_player_info = get_user(second_player_name).get("data")
-        first_player_info = get_user(first_player_name).get("data")
+        second_player_info = get_user(second_player_name)
+        first_player_info = get_user(first_player_name)
         
         emit("finishedWaitingRoom", {"roomName" : room_name, "opponentName" : second_player_name, "opponentInfo" : second_player_info}, namespace = "/play")
         emit("finishedWaitingRoom", {"roomName" : room_name, "opponentName" : first_player_name, "opponentInfo" : first_player_info}, namespace = "/play", to = second_player_id)
@@ -48,8 +48,8 @@ def player_leave(data):
 
     won_player_name = room_players[1] if room_players[0] == lost_player_name else room_players[0]
 
-    won_player_info = get_user(won_player_name).get("data")
-    lost_player_info = get_user(lost_player_name).get("data")
+    won_player_info = get_user(won_player_name)
+    lost_player_info = get_user(lost_player_name)
 
     emit("finishedGame", {"wonPlayer" : won_player_name, "lostPlayer" : lost_player_name, "wonPlayerInfo" : won_player_info, "lostPlayerInfo" : lost_player_info}, namespace = "/play", to = room_name.split(" ")[0])
     emit("finishedGame", {"wonPlayer" : won_player_name, "lostPlayer" : lost_player_name, "wonPlayerInfo" : won_player_info, "lostPlayerInfo" : lost_player_info}, namespace = "/play", to = room_name.split(" ")[1])
@@ -74,8 +74,8 @@ def player_win(data):
 
     delete_room(room_name)
 
-    won_player_info = get_user(won_player_name).get("data")
-    lost_player_info = get_user(lost_player_name).get("data")
+    won_player_info = get_user(won_player_name)
+    lost_player_info = get_user(lost_player_name)
 
     emit("finishedGame", {"wonPlayer" : won_player_name, "lostPlayer" : lost_player_name, "wonPlayerInfo" : won_player_info, "lostPlayerInfo" : lost_player_info}, namespace = "/play", to = room_name)
     close_room(room_name)
