@@ -150,20 +150,3 @@ def execute_code(script : str, problem_id : str, is_test = False, language = "py
     res = res.json()
 
     return parse_output(res, problem_info.get("testCases"), is_test)
-
-@execute.route('/<string:id>', methods = ["POST"])
-def index(id : str):
-    """
-    Returns the result of executing the user's code through the JDOODLE api. Before being run, the user code is appended by the append_script function.
-
-    Parameters
-    --------------
-    id: int
-        An integer representing the id of a the problem the user is solving. Used to query the database of problems for the append_script function.
-    """
-    post_body = request.json
-    script = post_body.get("script")
-
-    code_output = execute_code(script, id)
-
-    return {"status": 404} if code_output is None else {"status" : 200, "data" : code_output}
