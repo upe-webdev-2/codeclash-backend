@@ -9,7 +9,12 @@ class TestSocketIO(unittest.TestCase):
         self.app = create_app()
         self.ctx = self.app.app_context()
         self.ctx.push()
-        self.client = self.app.test_client()
+
+        self.client = socketio.test_client(self.app, namespace = "/play")
+        self.client2 = socketio.test_client(self.app, namespace = "/play")
+
+        self.client_name = "client@email.com"
+        self.client2_name = "client2@mail.com"
     
     def tearDown(self) -> None:
         self.ctx.pop()
@@ -17,8 +22,13 @@ class TestSocketIO(unittest.TestCase):
         reset_rooms()
     
     def test_connect(self):
-        client = socketio.test_client(self.app, namespace = "/play")
-        client2 = socketio.test_client(self.app, namespace = "/play")
+        """
+        Tests if user correctly connects to socket under /play namespace.
+        """
+
+        client = self.client
+        client2 = self.client2
+
         self.assertTrue(client.is_connected("/play"))
         self.assertTrue(client2.is_connected("/play"))
         self.assertNotEqual(client.eio_sid, client2.eio_sid)
@@ -29,11 +39,13 @@ class TestSocketIO(unittest.TestCase):
         self.assertFalse(client2.is_connected("/play"))
     
     def test_player_join(self):
-        client = socketio.test_client(self.app, namespace = "/play")
-        client2 = socketio.test_client(self.app, namespace = "/play")
-
-        client_name = "client@email.com"
-        client2_name = "client2@mail.com"
+        """
+        Tests if playerJoin correctly joins user and emits finishedWaitingRoom properly.
+        """
+        client = self.client
+        client_name = self.client_name
+        client2 = self.client2
+        client2_name = self.client2_name
 
         client.emit("playerJoin", {"username" : client_name}, namespace = "/play")
         client2.emit("playerJoin", {"username" : client2_name}, namespace = "/play")
@@ -53,9 +65,11 @@ class TestSocketIO(unittest.TestCase):
         self.assertEqual(client_received[0]['args'][0].get("roomName"), client2_received[0]['args'][0].get("roomName"), "Clients are not in the same room.")
     
     def test_player_leave_waiting_room(self):
-        # Check if playerLeave removes client from waitingRoom
-        client = socketio.test_client(self.app, namespace = "/play")
-        client_name = "client@email.com"
+        """
+        Tests if playerLeave removes client from waitingRoom. 
+        """
+        client = self.client
+        client_name = self.client_name
 
         client.emit("playerJoin", {"username" : client_name}, namespace = "/play")
         client.emit("playerLeave", {"username" : client_name}, namespace = "/play")
@@ -63,17 +77,23 @@ class TestSocketIO(unittest.TestCase):
         self.assertFalse(in_waiting_room(player_name = client_name))
 
     def test_player_leave_not_joined(self):
-        # Check if playerLeave works when player is not joined
-        client = socketio.test_client(self.app, namespace = "/play")
-        client_name = "client@email.com"
+        """
+        Tests if playerLeave works when player is not joined.
+        """
+        client = self.client
+        client_name = self.client_name
+
         client.emit("playerLeave", {"username" : client_name}, namespace = "/play")
 
     def test_player_leave_in_game(self):
-        client = socketio.test_client(self.app, namespace = "/play")
-        client_name = "client@email.com"
+        """
+        Tests if playerLeave works when player is already in a game.
+        """
+        client = self.client
+        client_name = self.client_name
 
-        client2 = socketio.test_client(self.app, namespace = "/play")
-        client2_name = "client2@gmail.com"
+        client2 = self.client2
+        client2_name = self.client2_name
 
         client.emit("playerJoin", {"username" : client_name}, namespace = "/play")
         client2.emit("playerJoin", {"username" : client2_name}, namespace = "/play")
@@ -91,13 +111,18 @@ class TestSocketIO(unittest.TestCase):
 
         self.assertEqual(client_received[1]["name"], "finishedGame")
         self.assertEqual(client2_received[1]["name"], "finishedGame")
+
+        return ""
     
     def test_ready_game(self):
-        client = socketio.test_client(self.app, namespace = "/play")
-        client_name = "client@email.com"
+        """
+        Tests if readyGame works and returns problemInfo.
+        """
+        client = self.client
+        client_name = self.client_name
 
-        client2 = socketio.test_client(self.app, namespace = "/play")
-        client2_name = "client2@email.com"
+        client2 = self.client2
+        client2_name = self.client2_name
 
         client.emit("playerJoin", {"username" : client_name}, namespace = "/play")
         client2.emit("playerJoin", {"username" : client2_name}, namespace = "/play")
@@ -117,11 +142,14 @@ class TestSocketIO(unittest.TestCase):
         self.assertIn("problemInfo", client2_received[-1]["args"][0])
     
     def test_player_test(self):
-        client = socketio.test_client(self.app, namespace = "/play")
-        client_name = "client@email.com"
+        """
+        Tests if playerTest executes code and returns playerTestResults.
+        """
+        client = self.client
+        client_name = self.client_name
 
-        client2 = socketio.test_client(self.app, namespace = "/play")
-        client2_name = "client2@email.com"
+        client2 = self.client2
+        client2_name = self.client2_name
 
         client.emit("playerJoin", {"username" : client_name}, namespace = "/play")
         client2.emit("playerJoin", {"username" : client2_name}, namespace = "/play")
@@ -139,11 +167,14 @@ class TestSocketIO(unittest.TestCase):
         self.assertEqual(client.get_received(namespace = "/play")[0]["name"], "playerTestResult")
     
     def test_player_submit(self):
-        client = socketio.test_client(self.app, namespace = "/play")
-        client_name = "client@email.com"
+        """
+        Tests if playerSubmit executes code and returns playerSubmitResults.
+        """
+        client = self.client
+        client_name = self.client_name
 
-        client2 = socketio.test_client(self.app, namespace = "/play")
-        client2_name = "client2@email.com"
+        client2 = self.client
+        client2_name = self.client2_name
 
         client.emit("playerJoin", {"username" : client_name}, namespace = "/play")
         client2.emit("playerJoin", {"username" : client2_name}, namespace = "/play")
