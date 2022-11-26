@@ -11,4 +11,6 @@ RUN pip install -e .
 
 EXPOSE 5000
 
+CMD ["prisma", "generate"]
+
 ENTRYPOINT ["python", "startup.py"]
