@@ -100,8 +100,8 @@ class TestSocketIO(unittest.TestCase):
 
         client.emit("playerLeave", {"username" : client_name}, namespace = "/play")
 
-        self.assertEqual(find_room(client_name), {})
-        self.assertEqual(find_room(client2_name), {})
+        self.assertEqual(find_room(username = client_name), {})
+        self.assertEqual(find_room(username = client2_name), {})
 
         client_received = client.get_received(namespace = "/play")
         client2_received = client2.get_received(namespace = "/play")

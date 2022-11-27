@@ -18,8 +18,7 @@ def find_room(room_name : str = None, username : str = None, user_id : str = Non
     for room in rooms.keys():
         room_info = rooms.get(room)
         players = room_info.get("players")
-        problem_id = room_info.get("problemID")
-
+        
         if user_id is not None and user_id in room:
             return {"roomName" : room, "roomInfo" : room_info}
 

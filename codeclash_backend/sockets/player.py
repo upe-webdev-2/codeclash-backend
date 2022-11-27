@@ -39,7 +39,7 @@ def player_leave(data):
         remove_from_waiting_room(lost_player_id, lost_player_name)
         return
 
-    room = find_room(lost_player_name, lost_player_id)
+    room = find_room(username = lost_player_name, user_id = lost_player_id)
 
     if len(room) == 0:
         return
