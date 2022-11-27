@@ -189,4 +189,4 @@ class TestSocketIO(unittest.TestCase):
 
         client.emit("playerSubmit",  {"username" : client_name, "userCode" : starter_code}, namespace = "/play")
 
-        self.assertEqual(client.get_received(namespace = "/play")[0]["name"], "playerSubmitResult")
+        self.assertEqual(client.get_received(namespace = "/play")[-1]["name"], "playerSubmitResult")
