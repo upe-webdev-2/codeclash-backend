@@ -44,7 +44,7 @@ def rand_problem() -> Union[dict, None]:
     
     if problem_count == 0:
         return {
-        "id": 0,
+        "id": "0",
         "title": "Two Sum",
         "difficulty": "Easy",
         "objectives": [
