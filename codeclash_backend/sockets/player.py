@@ -2,6 +2,7 @@ from codeclash_backend import socketio
 from . import already_playing, dequeue_from_waiting, queue_to_waiting, create_room, find_room, delete_room, amount_players_waiting, in_waiting_room, remove_from_waiting_room
 from ..routes.execute import execute_code
 from ..routes.user import get_user
+from ..routes.problem import rand_problem
 from flask import request
 from flask_socketio import close_room, emit
 
@@ -19,13 +20,13 @@ def join_game(data):
         second_player_id, second_player_name = dequeue_from_waiting()
         room_name = f"{first_player_id} {second_player_id}"
 
-        second_player_info = get_user(second_player_name).get("data")
-        first_player_info = get_user(first_player_name).get("data")
+        second_player_info = get_user(second_player_name)
+        first_player_info = get_user(first_player_name)
+
+        create_room(room_name, first_player_name, second_player_name)
         
         emit("finishedWaitingRoom", {"roomName" : room_name, "opponentName" : second_player_name, "opponentInfo" : second_player_info}, namespace = "/play")
         emit("finishedWaitingRoom", {"roomName" : room_name, "opponentName" : first_player_name, "opponentInfo" : first_player_info}, namespace = "/play", to = second_player_id)
-        
-        create_room(room_name, first_player_name, second_player_name)
     else:
         queue_to_waiting(first_player_id, first_player_name)
 
@@ -38,7 +39,7 @@ def player_leave(data):
         remove_from_waiting_room(lost_player_id, lost_player_name)
         return
 
-    room = find_room(lost_player_name, lost_player_id)
+    room = find_room(username = lost_player_name, user_id = lost_player_id)
 
     if len(room) == 0:
         return
@@ -48,8 +49,8 @@ def player_leave(data):
 
     won_player_name = room_players[1] if room_players[0] == lost_player_name else room_players[0]
 
-    won_player_info = get_user(won_player_name).get("data")
-    lost_player_info = get_user(lost_player_name).get("data")
+    won_player_info = get_user(won_player_name)
+    lost_player_info = get_user(lost_player_name)
 
     emit("finishedGame", {"wonPlayer" : won_player_name, "lostPlayer" : lost_player_name, "wonPlayerInfo" : won_player_info, "lostPlayerInfo" : lost_player_info}, namespace = "/play", to = room_name.split(" ")[0])
     emit("finishedGame", {"wonPlayer" : won_player_name, "lostPlayer" : lost_player_name, "wonPlayerInfo" : won_player_info, "lostPlayerInfo" : lost_player_info}, namespace = "/play", to = room_name.split(" ")[1])
@@ -74,8 +75,8 @@ def player_win(data):
 
     delete_room(room_name)
 
-    won_player_info = get_user(won_player_name).get("data")
-    lost_player_info = get_user(lost_player_name).get("data")
+    won_player_info = get_user(won_player_name)
+    lost_player_info = get_user(lost_player_name)
 
     emit("finishedGame", {"wonPlayer" : won_player_name, "lostPlayer" : lost_player_name, "wonPlayerInfo" : won_player_info, "lostPlayerInfo" : lost_player_info}, namespace = "/play", to = room_name)
     close_room(room_name)
