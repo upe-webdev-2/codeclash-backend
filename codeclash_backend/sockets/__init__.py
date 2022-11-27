@@ -1,3 +1,5 @@
+from typing import Union
+
 from flask_socketio import emit, join_room, close_room
 from flask import request
 from ..routes.problem import rand_problem, specific_problem
@@ -5,7 +7,7 @@ from ..routes.problem import rand_problem, specific_problem
 waiting_room = []
 rooms = {}
 
-def find_room(username = None, user_id = None) -> dict:
+def find_room(username : str = None, user_id : str = None) -> dict:
     if username is None and user_id is None:
         return {}
 
@@ -43,11 +45,33 @@ def dequeue_from_waiting() -> tuple:
 def queue_to_waiting(player_id : str, player_name : str):
     waiting_room.append((player_id, player_name))
 
+def in_waiting_room(player_id : str = None, player_name : str = None) -> bool:
+    for p_info in waiting_room:
+        p_id, p_name = p_info
+        if player_id is not None and player_id == p_id:
+            return True
+        if player_name is not None and player_name == p_name:
+            return True
+    return False
+
+def remove_from_waiting_room(player_id : str = None, player_name : str = None) -> Union[tuple, None]:
+    for index, player_info in enumerate(waiting_room):
+        p_id, p_name = player_info
+        if player_id is not None and player_id == p_id:
+            return waiting_room.pop(index)
+        if player_name is not None and player_name == p_name:
+            return waiting_room.pop(index)
+    return None
+
 def create_room(room_name : str, first_player_name : str, second_player_name : str):
     rooms[room_name] = {"players" : [first_player_name, second_player_name], "problemID" : None}
 
 def delete_room(room_name : str):
     del rooms[room_name]
+
+def reset_rooms():
+    waiting_room.clear()
+    rooms.clear()
 
 def set_problem(room_name : str):
     room = rooms.get(room_name)

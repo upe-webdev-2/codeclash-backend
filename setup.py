@@ -10,6 +10,8 @@ setup(
         'requests',
         'flask-socketio',
         'simple-websocket',
-        'eventlet'
+        'eventlet',
+        'prisma',
+        'coverage'
     ],
 )

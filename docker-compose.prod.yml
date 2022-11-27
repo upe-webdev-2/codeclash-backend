@@ -15,7 +15,7 @@ services:
     # specify container should start after mysql service is up
     depends_on:
       - postgres
-
+  
   # define mysql service
   postgres:
     container_name: postgres

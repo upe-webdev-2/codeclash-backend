@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# cd into working dir
-cd ~/codeclash_backend
 # reset git branch
 git fetch && git reset origin/main -- hard
 # spin down containers

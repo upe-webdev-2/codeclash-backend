@@ -87,3 +87,11 @@ python startup.py
 ```
 
 This will start up a local Flask instance, which you can use to test the routes of the backend.
+
+## Running Tests
+
+In order to run tests on the sockets, run the command:
+
+```
+coverage run -m unittest discover
+```
