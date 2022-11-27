@@ -94,16 +94,6 @@ def is_valid_auth_token(token: str) -> bool:
     hashed = hashlib.md5(password.encode()).hexdigest()
     return (hashed == os.environ.get("ACCESS_TOKEN"))
 
-@problem.route('/<string:id>', methods = ["GET"])
-def specific_problem_route(id : str):
-    data = specific_problem(id)
-    return {"status" : 404} if data is None else {"status" : 200, "data" : data}
-    
-@problem.route('/', methods = ["GET"])
-def rand_problem_route():
-    data = rand_problem()
-    return {"status" : 404} if data is None else {"status" : 200, "data" : data}
-
 @problem.route('/', methods = ["POST"])
 def add_problem():
     post_body = request.json
