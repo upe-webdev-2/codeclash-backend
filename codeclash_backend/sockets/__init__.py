@@ -7,7 +7,11 @@ from ..routes.problem import rand_problem, specific_problem
 waiting_room = []
 rooms = {}
 
-def find_room(username : str = None, user_id : str = None) -> dict:
+def find_room(room_name : str = None, username : str = None, user_id : str = None) -> dict:
+
+    if room_name is not None:
+        return rooms.get(room_name)
+
     if username is None and user_id is None:
         return {}
 
@@ -64,7 +68,8 @@ def remove_from_waiting_room(player_id : str = None, player_name : str = None) -
     return None
 
 def create_room(room_name : str, first_player_name : str, second_player_name : str):
-    rooms[room_name] = {"players" : [first_player_name, second_player_name], "problemID" : None}
+    problem = rand_problem()
+    rooms[room_name] = {"players" : [first_player_name, second_player_name], "problemID" : problem.get("id"), "problemInfo" : problem}
 
 def delete_room(room_name : str):
     del rooms[room_name]
@@ -72,15 +77,5 @@ def delete_room(room_name : str):
 def reset_rooms():
     waiting_room.clear()
     rooms.clear()
-
-def set_problem(room_name : str):
-    room = rooms.get(room_name)
-    problem = None
-    if room.get("problemID") is None:
-        problem = rand_problem()
-        room["problemID"] = problem.get("id")
-    else:
-        problem = specific_problem(room.get("problemID"))
-    return problem
 
 from . import game, player
