@@ -86,10 +86,9 @@ def player_test(data):
     user_code = data.get("userCode")
     player_name = data.get("username")
     room = find_room(username = player_name)
-    room_name = room.get("roomName")
-    problem_id = room.get("roomInfo").get("problemID")
+    problem_number = room.get("roomInfo").get("problemNumber")
 
-    result = execute_code(user_code, problem_id, True)
+    result = execute_code(user_code, problem_number, True)
     emit("playerTestResult", {**result})
 
 @socketio.on("playerSubmit", namespace = namespace)
@@ -97,10 +96,9 @@ def player_test(data):
     user_code = data.get("userCode")
     player_name = data.get("username")
     room = find_room(username = player_name)
-    room_name = room.get("roomName")
-    problem_id = room.get("roomInfo").get("problemID")
+    problem_number = room.get("roomInfo").get("problemNumber")
 
-    result = execute_code(user_code, problem_id)
+    result = execute_code(user_code, problem_number)
 
     if result.get("passedAllCases"):
         player_win({"username" : player_name})

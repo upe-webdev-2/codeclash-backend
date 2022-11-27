@@ -102,7 +102,7 @@ def parse_output(res : dict, test_cases : dict, is_test = False) -> dict:
     parsed_result["testResults"] = test_results
     return parsed_result
 
-def execute_code(script : str, problem_id : str, is_test = False, language = "python3", version_index = "3") -> Union[dict, None]:
+def execute_code(script : str, problem_number : int, is_test = False, language = "python3", version_index = "3") -> Union[dict, None]:
     """
     Executes user code through the JDOODLE API and returns a dictionary of information based on
     the JDOODLE output.
@@ -112,7 +112,7 @@ def execute_code(script : str, problem_id : str, is_test = False, language = "py
     script : str
         A string of code written by the user
     
-    problem_id : int
+    problem_number : int
         The unique id of the problem being solved by the user, which indicates the test_cases that should be 
         appended to the script parameter.
     
@@ -126,7 +126,7 @@ def execute_code(script : str, problem_id : str, is_test = False, language = "py
         Integer representing version of language, as per JDOODLE's documentation, linked here: https://docs.jdoodle.com/integrating-compiler-ide-to-your-application/languages-and-versions-supported-in-api-and-plugins
     """
 
-    problem_info = specific_problem(problem_id)
+    problem_info = specific_problem(problem_number)
 
     if problem_info is None:
         return None

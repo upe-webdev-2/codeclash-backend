@@ -11,7 +11,7 @@ from codeclash_backend import prisma
 
 problem = Blueprint('problem', __name__)
 
-def specific_problem(id : str) -> Union[dict, None]:
+def specific_problem(id : int) -> Union[dict, None]:
     r"""
     Finds specific problem based on id passed into the route.
 
@@ -27,7 +27,7 @@ def specific_problem(id : str) -> Union[dict, None]:
     
     data = prisma.problem.find_unique(
         where = {
-            "id" : id
+            "problemNumber" : id
         }
     )
     
@@ -48,7 +48,8 @@ def rand_problem() -> Union[dict, None]:
     
     if problem_count == 0:
         return {
-        "id": "0",
+        "problemNumber" : 1,
+        "id": "Two Sum",
         "title": "Two Sum",
         "difficulty": "Easy",
         "objectives": [
@@ -76,10 +77,10 @@ def rand_problem() -> Union[dict, None]:
         "functionName": "twoSum"
         }
     
-    random_id = random.randint(0, problem_count - 1)
+    random_id = random.randint(1, problem_count)
 
     problem = prisma.problem.find_unique(where = {
-        "id" : str(random_id)
+        "problemNumber" : random_id
     })
 
     return problem.dict()
@@ -126,4 +127,5 @@ def add_problem():
         
         return {"status": 200, "problem": problem.dict()}
     except Exception as e:
+        print(e)
         return {"status": 400, "message": "A type error occured when adding to the database"}  
