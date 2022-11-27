@@ -68,7 +68,7 @@ def remove_from_waiting_room(player_id : str = None, player_name : str = None) -
 
 def create_room(room_name : str, first_player_name : str, second_player_name : str):
     problem = rand_problem()
-    rooms[room_name] = {"players" : [first_player_name, second_player_name], "problemID" : problem.get("id"), "problemInfo" : problem}
+    rooms[room_name] = {"players" : [first_player_name, second_player_name], "problemNumber" : problem.get("problemNumber"), "problemInfo" : problem}
 
 def delete_room(room_name : str):
     del rooms[room_name]
