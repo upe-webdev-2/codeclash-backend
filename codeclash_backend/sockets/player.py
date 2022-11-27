@@ -2,6 +2,7 @@ from codeclash_backend import socketio
 from . import already_playing, dequeue_from_waiting, queue_to_waiting, create_room, find_room, delete_room, amount_players_waiting, in_waiting_room, remove_from_waiting_room
 from ..routes.execute import execute_code
 from ..routes.user import get_user
+from ..routes.problem import rand_problem
 from flask import request
 from flask_socketio import close_room, emit
 
@@ -21,11 +22,11 @@ def join_game(data):
 
         second_player_info = get_user(second_player_name)
         first_player_info = get_user(first_player_name)
+
+        create_room(room_name, first_player_name, second_player_name)
         
         emit("finishedWaitingRoom", {"roomName" : room_name, "opponentName" : second_player_name, "opponentInfo" : second_player_info}, namespace = "/play")
         emit("finishedWaitingRoom", {"roomName" : room_name, "opponentName" : first_player_name, "opponentInfo" : first_player_info}, namespace = "/play", to = second_player_id)
-        
-        create_room(room_name, first_player_name, second_player_name)
     else:
         queue_to_waiting(first_player_id, first_player_name)
 
