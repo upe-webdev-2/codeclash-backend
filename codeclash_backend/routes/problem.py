@@ -1,10 +1,9 @@
 import random
 from typing import Union
 
-from flask import Blueprint
+from flask import Blueprint, request
+from prisma import enums, Json
 
-import json
-import uuid
 import hashlib
 import os
 
@@ -59,11 +58,11 @@ def rand_problem() -> Union[dict, None]:
     return problem.dict()
 
 def is_valid_auth_token(token: str) -> bool:
-    #Use this to generate new authorization tokens:
-    #password = "mypassword" + os.environ.get("ACCESS_TOKEN_SALT")
-    #hashed = hashlib.md5(password.encode()).hexdigest()
-    #print(hashed)
-    
+    # Use this to generate new authorization tokens:
+    # password = "SPECIAL_PHRASE" + os.environ.get("ACCESS_TOKEN_SALT")
+    # hashed = hashlib.md5(password.encode()).hexdigest()
+    # print(hashed)
+
     password = token + os.environ.get("ACCESS_TOKEN_SALT")
     hashed = hashlib.md5(password.encode()).hexdigest()
     return (hashed == os.environ.get("ACCESS_TOKEN"))
@@ -90,21 +89,24 @@ def add_problem():
     
     if problem == None:
         return {"status": 400, "message": "Request must contain a problem object"}
-    
+
     try:
+
+        examples = [Json(example) for example in problem["examples"]]
+
+        test_cases = [Json(test_case) for test_case in problem["testCases"]]
+
         problem = prisma.problem.create(data={
-            "id": str(uuid.uuid1()), #probably a better way to generate the id. I thought postgres did this automatically?
+            "id": problem["id"],
             "title": problem["title"],
             "difficulty": enums.ProblemDifficulty[problem["difficulty"]],
             "objectives": problem["objectives"],
-            "examples": [
-                json.dumps(problem["examples"])
-            ],
+            "examples": examples,
             "starterCode": problem["starterCode"],
-            "testCases": [json.dumps(problem["testCases"])],
+            "testCases": test_cases,
             "functionName": problem["functionName"]
         })
         
-        return {"status": 200, "problem": problem}
-    except:
+        return {"status": 200, "problem": problem.dict()}
+    except Exception as e:
         return {"status": 400, "message": "A type error occured when adding to the database"}  
