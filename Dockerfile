@@ -13,6 +13,4 @@ EXPOSE 8000
 
 RUN ["prisma", "generate"]
 
-CMD ["prisma", "generate"]
-
 ENTRYPOINT ["python", "startup.py"]
