@@ -2,6 +2,20 @@
 version: "3"
 # define list of services 
 services:
+  frontend:
+    # define container name
+    container_name: frontend
+    # build container with dockerfile in frontend directory
+    build: . /frontend
+    # restart on reboot or crash
+    restart: always
+    # define .env file
+    env_file:
+      - .env
+    # specify container should start after backend
+    depends_on:
+      - backend
+      
   # define myportfolio service
   backend:
     container_name: backend
