@@ -71,6 +71,8 @@ def disconnect(data):
     if len(room) == 0:
         return
 
+    lost_player_name, won_player_name = None, None
+
     room_name = room.get("roomName")
     room_players = room.get("players")
     room_player_ids = room_name.split(" ")
