@@ -3,10 +3,10 @@
 FROM ubuntu
 
 RUN apt update
-RUN apt install nodejs
-RUN apt install npm
-RUN apt install python3
-RUN apt install python3-pip 
+RUN apt install nodejs -y
+RUN apt install npm -y
+RUN apt install python3 -y
+RUN apt install python3-pip -y 
 
 RUN mkdir /codeclash_backend
 WORKDIR /codeclash_backend
