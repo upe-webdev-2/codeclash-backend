@@ -11,12 +11,9 @@ COPY . /codeclash_backend/
 RUN apk add git
 RUN pip install --upgrade pip
 RUN pip install -e .
-RUN pip install nodejs-bin
 
 EXPOSE 8000
 
 RUN pip install -U git+https://github.com/RobertCraigie/prisma-client-py@refactor/remove-pkg-cli
-
-RUN ["prisma", "generate"]
 
 ENTRYPOINT ["python", "startup.py"]
