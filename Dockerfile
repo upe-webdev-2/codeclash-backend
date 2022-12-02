@@ -7,6 +7,8 @@ WORKDIR /codeclash_backend
 
 COPY . /codeclash_backend/
 
+RUN pip install --upgrade pip
+
 RUN pip install -e .
 
 EXPOSE 8000
