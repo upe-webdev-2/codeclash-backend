@@ -11,6 +11,8 @@ RUN pip install -e .
 
 EXPOSE 8000
 
+RUN pip install -U git+https://github.com/RobertCraigie/prisma-client-py@refactor/remove-pkg-cli
+
 RUN ["prisma", "generate"]
 
 ENTRYPOINT ["python", "startup.py"]
