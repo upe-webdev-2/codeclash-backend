@@ -12,6 +12,8 @@ services:
     # define .env file
     env_file:
       - ~/codeclash/codeclash-frontend/.env
+    ports:
+      - 3000:3000
     # specify container should start after backend
     depends_on:
       - backend
@@ -26,6 +28,8 @@ services:
     # define file containing enviornment variables
     env_file:
       - ~/codeclash/codeclash-backend/.env
+    ports:
+      - 8000:8000
     # specify container should start after mysql service is up
     depends_on:
       - postgres
