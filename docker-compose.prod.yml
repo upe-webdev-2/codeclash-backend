@@ -44,6 +44,8 @@ services:
     # define file containing enviornemnt variables
     env_file:
       - ~/codeclash/codeclash-backend/.env
+    expose:
+      - "5432"
     volumes:
       - pgdata:/var/lib/postgres/data
   
