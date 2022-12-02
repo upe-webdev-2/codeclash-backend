@@ -13,7 +13,7 @@ RUN pip install -e .
 
 EXPOSE 8000
 
-RUN sudo apk add git
+RUN apk add git
 
 RUN pip install -U git+https://github.com/RobertCraigie/prisma-client-py@refactor/remove-pkg-cli
 
