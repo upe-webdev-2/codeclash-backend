@@ -8,7 +8,7 @@ WORKDIR /codeclash_backend
 COPY . /codeclash_backend/
 
 
-RUN sudo apk add git
+RUN apk add git
 RUN pip install --upgrade pip
 RUN pip install -e .
 
