@@ -1,21 +1,26 @@
 # syntax=docker/dockerfile:1
 
-FROM node:9-slim
-RUN apt-get update || : ** apt-get install python3-pip -y
+FROM ubuntu
+
+RUN sudo apt update
+RUN sudo apt install nodejs
+RUN sudo install npm
+RUN sudo apt install python3
+RUN sudo apt install python3-pip 
 
 RUN mkdir /codeclash_backend
 WORKDIR /codeclash_backend
 
 COPY . /codeclash_backend/
 
-RUN pip install --upgrade pip
-RUN pip install -e .
+RUN pip3 install --upgrade pip
+RUN pip3 install -e .
 
 EXPOSE 8000
 
 RUN apt install git
 
-RUN pip install -U git+https://github.com/RobertCraigie/prisma-client-py@refactor/remove-pkg-cli
+RUN pip3 install -U git+https://github.com/RobertCraigie/prisma-client-py@refactor/remove-pkg-cli
 
 RUN ["prisma", "generate"]
 
