@@ -3,7 +3,6 @@
 FROM ubuntu
 
 RUN apt update
-RUN apt install nodejs -y
 RUN apt install python3 -y
 RUN apt install python3-pip -y 
 
@@ -14,6 +13,7 @@ COPY . /codeclash_backend/
 
 RUN pip3 install --upgrade pip
 RUN pip3 install -e .
+RUN pip3 install nodejs-bin
 
 EXPOSE 8000
 
