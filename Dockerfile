@@ -17,7 +17,7 @@ RUN pip3 install nodejs-bin
 
 EXPOSE 8000
 
-RUN apt install git
+RUN apt install git -y
 
 RUN pip3 install -U git+https://github.com/RobertCraigie/prisma-client-py@refactor/remove-pkg-cli
 
