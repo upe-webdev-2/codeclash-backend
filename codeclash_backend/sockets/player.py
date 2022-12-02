@@ -17,13 +17,12 @@ def disconnect():
         return
 
     room = find_room(user_id=disconnect_player_id)
-    room_players = room.get("roomInfo").get("players")
 
     if len(room) == 0:
         return
 
     room_name = room.get("roomName")
-    print(room_name)
+    room_players = room.get("roomInfo").get("players")
     room_player_ids = room_name.split(" ")
 
     if room_player_ids[0] == disconnect_player_id:
