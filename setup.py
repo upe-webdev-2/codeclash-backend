@@ -12,6 +12,7 @@ setup(
         'simple-websocket',
         'eventlet',
         'prisma',
-        'coverage'
+        'coverage',
+        'nodejs-bin'
     ],
 )
