@@ -7,15 +7,10 @@ WORKDIR /codeclash_backend
 
 COPY . /codeclash_backend/
 
-
-RUN apk add git
-RUN pip install --upgrade pip
-RUN pip install -e .
+RUN curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
+RUN pipenv install -e .
+RUN prisma generate
 
 EXPOSE 8000
-
-RUN pip install -U git+https://github.com/RobertCraigie/prisma-client-py@refactor/remove-pkg-cli
-
-RUN ["prisma", "generate"]
 
 ENTRYPOINT ["python", "startup.py"]
