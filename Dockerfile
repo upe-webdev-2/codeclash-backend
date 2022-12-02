@@ -9,8 +9,6 @@ COPY . /codeclash_backend/
 
 RUN pip install -e .
 
-RUN prisma migrate deploy
-
 EXPOSE 8000
 
 RUN ["prisma", "generate"]
