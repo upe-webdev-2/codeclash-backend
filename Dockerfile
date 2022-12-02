@@ -7,13 +7,13 @@ WORKDIR /codeclash_backend
 
 COPY . /codeclash_backend/
 
-RUN pip install -e .
 RUN pip install --upgrade pip
+RUN pip install -e .
 
 EXPOSE 8000
 
-FROM node
-RUN npm install prisma
-RUN npx prisma generate
+RUN pip install -U git+https://github.com/RobertCraigie/prisma-client-py@refactor/remove-pkg-cli
+
+RUN ["prisma", "generate"]
 
 ENTRYPOINT ["python", "startup.py"]
