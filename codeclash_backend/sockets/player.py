@@ -17,19 +17,21 @@ def disconnect():
         return
 
     room = find_room(user_id=disconnect_player_id)
+    room_players = room.get("roomInfo").get("players")
 
     if len(room) == 0:
         return
 
     room_name = room.get("roomName")
+    print(room_name)
     room_player_ids = room_name.split(" ")
 
     if room_player_ids[0] == disconnect_player_id:
-        lost_player_name = room_player_ids[0]
-        won_player_name = room_player_ids[1]
+        lost_player_name = room_players[0]
+        won_player_name = room_players[1]
     else:
-        lost_player_name = room_player_ids[1]
-        won_player_name = room_player_ids[0]
+        lost_player_name = room_players[1]
+        won_player_name = room_players[0]
 
     won_player_info = get_user(won_player_name)
     lost_player_info = get_user(lost_player_name)
