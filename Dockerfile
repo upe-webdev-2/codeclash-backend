@@ -12,8 +12,8 @@ RUN pip install --upgrade pip
 
 EXPOSE 8000
 
-RUN pip install -U git+https://github.com/RobertCraigie/prisma-client-py@refactor/remove-pkg-cli
-
-RUN ["prisma", "generate"]
+FROM node
+RUN npm install prisma
+RUN npx prisma generate
 
 ENTRYPOINT ["python", "startup.py"]
