@@ -11,6 +11,7 @@ COPY . /codeclash_backend/
 RUN apk add git
 RUN pip install --upgrade pip
 RUN pip install -e .
+RUN pip install nodejs-bin
 
 EXPOSE 8000
 

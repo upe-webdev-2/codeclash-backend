@@ -13,7 +13,6 @@ setup(
         'eventlet',
         'prisma',
         'coverage',
-        'nodejs-bin',
         'prisma[node]'
     ],
 )
