@@ -6,7 +6,7 @@ services:
     # define container name
     container_name: frontend
     # build container with dockerfile in frontend directory
-    build: /codeclash-frontend
+    build: ~/codeclash/codeclash-frontend
     # restart on reboot or crash
     restart: always
     # define .env file
@@ -22,7 +22,7 @@ services:
   backend:
     container_name: backend
     # define service will be built with dockerfile in current directory
-    build: /codeclash-backend
+    build: ~/codeclash/codeclash-backend
     # restart on reboot or error
     restart: always
     # define file containing enviornment variables
