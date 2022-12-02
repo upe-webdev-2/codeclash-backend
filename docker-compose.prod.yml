@@ -30,7 +30,7 @@ services:
       - ~/codeclash/codeclash-backend/.env
     ports:
       - 8000:8000
-    # specify container should start after mysql service is up
+    # specify container should start after postgres service is up
     depends_on:
       - postgres
   
