@@ -21,6 +21,8 @@ RUN apt install git -y
 
 RUN pip3 install -U git+https://github.com/RobertCraigie/prisma-client-py@refactor/remove-pkg-cli
 
+RUN ["prisma", "migrate", "deploy"]
+
 RUN ["prisma", "generate"]
 
 ENTRYPOINT ["python3", "startup.py"]
