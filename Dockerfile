@@ -8,14 +8,14 @@ WORKDIR /codeclash_backend
 
 COPY . /codeclash_backend/
 
-RUN pip3 install --upgrade pip
-RUN pip3 install -e .
+RUN pip install --upgrade pip
+RUN pip install -e .
 
 EXPOSE 8000
 
 RUN apt install git
 
-RUN pip3 install -U git+https://github.com/RobertCraigie/prisma-client-py@refactor/remove-pkg-cli
+RUN pip install -U git+https://github.com/RobertCraigie/prisma-client-py@refactor/remove-pkg-cli
 
 RUN ["prisma", "generate"]
 
