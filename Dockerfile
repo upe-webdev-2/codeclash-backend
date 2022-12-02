@@ -8,7 +8,7 @@ WORKDIR /codeclash_backend
 COPY . /codeclash_backend/
 
 RUN curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
-RUN pipenv install -e .
+RUN pipenv install --system --deploy --ignore-pipfile
 RUN prisma generate
 
 EXPOSE 8000
